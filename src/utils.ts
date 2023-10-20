@@ -25,7 +25,7 @@ type VehiclePackingScenario = {
   packages: Package[];
   totalWeight: number;
 };
-type VehiclePackingScenarios = [VehiclePackingScenario?];
+type VehiclePackingScenarios = VehiclePackingScenario[];
 
 export const simulatePackVehicle = (vehicle: Vehicle, packages: Package[]) => {
   const scenarios: VehiclePackingScenarios = [];
@@ -61,7 +61,32 @@ export const simulatePackVehicle = (vehicle: Vehicle, packages: Package[]) => {
     }
   };
 
-  simulate(vehicle, structuredClone(packages));
+  simulate(vehicle, packages);
 
   return scenarios;
+};
+
+export const getBestScenario = (
+  scenarios: VehiclePackingScenarios,
+  packages: Package[]
+) => {
+  const sortedScenarios = scenarios.toSorted(
+    (a: VehiclePackingScenario, b: VehiclePackingScenario) => {
+      if (a.totalWeight > b.totalWeight) {
+        return -1;
+      } else if (a.totalWeight < b.totalWeight) {
+        return 1;
+      }
+      return 0;
+    }
+  );
+
+  const bestScenario = {
+    ...sortedScenarios[0],
+    remainingPackages: packages.filter(
+      (pkg) => !sortedScenarios[0].packages.map((p) => p.id).includes(pkg.id)
+    ),
+  };
+
+  return bestScenario;
 };

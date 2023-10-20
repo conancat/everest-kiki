@@ -1,7 +1,7 @@
-import { Package } from '../models/package';
+import { Package, createPackage } from '../models/package';
 import mockPackages from '../__mocks__/packages.json';
-import { sortPackages, simulatePackVehicle } from '../utils';
-import { Vehicle } from '../models/vehicle';
+import { sortPackages, simulatePackVehicle, getBestScenario } from '../utils';
+import { Vehicle, createVehicle } from '../models/vehicle';
 
 describe('sortPackages()', () => {
   it('should sort packages by weight in descending order when packages weights are not the same', () => {
@@ -31,7 +31,7 @@ describe('sortPackages()', () => {
         weight: 25,
         distance: 30,
       },
-    ];
+    ].map(createPackage);
 
     const expectedPackages = [
       {
@@ -59,7 +59,7 @@ describe('sortPackages()', () => {
         weight: 25,
         distance: 30,
       },
-    ];
+    ].map(createPackage);
 
     const sortedPackages = sortPackages(packages);
 
@@ -93,7 +93,7 @@ describe('sortPackages()', () => {
         weight: 80,
         distance: 60,
       },
-    ];
+    ].map(createPackage);
 
     const expectedPackages = [
       {
@@ -121,7 +121,7 @@ describe('sortPackages()', () => {
         weight: 80,
         distance: 125,
       },
-    ];
+    ].map(createPackage);
 
     const sortedPackages = sortPackages(packages);
 
@@ -155,7 +155,7 @@ describe('sortPackages()', () => {
         weight: 80,
         distance: 60,
       },
-    ];
+    ].map(createPackage);
 
     const expectedPackages = [
       {
@@ -183,7 +183,7 @@ describe('sortPackages()', () => {
         weight: 80,
         distance: 125,
       },
-    ];
+    ].map(createPackage);
 
     const sortedPackages = sortPackages(packages);
 
@@ -222,7 +222,7 @@ describe('sortPackages()', () => {
         weight: 50,
         distance: 100,
       },
-    ];
+    ].map(createPackage);
 
     const expectedPackages = [
       {
@@ -265,12 +265,16 @@ describe('sortPackages()', () => {
 
 describe('simulatePackVehicle()', () => {
   it('should simulate possible vehicle packing scenarios: 5 packages (Step 01)', () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = createVehicle({
+      id: 'VEHICLE_1',
       maxSpeed: 50,
       maxWeight: 200,
-    };
+    });
 
-    const results = simulatePackVehicle(vehicle, mockPackages);
+    const results = simulatePackVehicle(
+      vehicle,
+      mockPackages.map(createPackage)
+    );
 
     expect(results).toEqual([
       {
@@ -343,14 +347,15 @@ describe('simulatePackVehicle()', () => {
   });
 
   it('should simulate possible vehicle packing scenarios: 3 packages (Step 02)', () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = createVehicle({
+      id: 'VEHICLE_1',
       maxSpeed: 50,
       maxWeight: 200,
-    };
+    });
 
-    const packages = mockPackages.filter((pkg) =>
-      ['PKG1', 'PKG3', 'PKG5'].includes(pkg.id)
-    );
+    const packages = mockPackages
+      .filter((pkg) => ['PKG1', 'PKG3', 'PKG5'].includes(pkg.id))
+      .map(createPackage);
 
     const results = simulatePackVehicle(vehicle, packages);
 
@@ -391,14 +396,15 @@ describe('simulatePackVehicle()', () => {
   });
 
   it('should simulate possible vehicle packing scenarios: 2 packages (Step 04)', () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = createVehicle({
+      id: 'VEHICLE_1',
       maxSpeed: 50,
       maxWeight: 200,
-    };
+    });
 
-    const packages = mockPackages.filter((pkg) =>
-      ['PKG1', 'PKG5'].includes(pkg.id)
-    );
+    const packages = mockPackages
+      .filter((pkg) => ['PKG1', 'PKG5'].includes(pkg.id))
+      .map(createPackage);
 
     const results = simulatePackVehicle(vehicle, packages);
 
@@ -428,12 +434,15 @@ describe('simulatePackVehicle()', () => {
   });
 
   it('should simulate possible vehicle packing scenarios: 1 package (Step 06)', () => {
-    const vehicle: Vehicle = {
+    const vehicle: Vehicle = createVehicle({
+      id: 'VEHICLE_1',
       maxSpeed: 50,
       maxWeight: 200,
-    };
+    });
 
-    const packages = mockPackages.filter((pkg) => pkg.id === 'PKG1');
+    const packages = mockPackages
+      .filter((pkg) => pkg.id === 'PKG1')
+      .map(createPackage);
 
     const results = simulatePackVehicle(vehicle, packages);
 
@@ -450,5 +459,118 @@ describe('simulatePackVehicle()', () => {
         totalWeight: 50,
       },
     ]);
+  });
+});
+
+describe('getBestScenario()', () => {
+  it('should get best scenario based on total weight carried by vehicle: 5 packages (Step 01)', () => {
+    const vehicle: Vehicle = createVehicle({
+      id: 'VEHICLE_1',
+      maxSpeed: 50,
+      maxWeight: 200,
+    });
+
+    const scenarios = simulatePackVehicle(
+      vehicle,
+      mockPackages.map(createPackage)
+    );
+
+    const bestScenario = getBestScenario(
+      scenarios,
+      mockPackages.map(createPackage)
+    );
+
+    expect(bestScenario).toEqual({
+      packages: [
+        { id: 'PKG4', weight: 110, distance: 60, offerCode: 'OFR002' },
+        { id: 'PKG2', weight: 75, distance: 125, offerCode: 'OFR008' },
+      ],
+      totalWeight: 185,
+      remainingPackages: [
+        { id: 'PKG1', weight: 50, distance: 30, offerCode: 'OFR001' },
+        { id: 'PKG3', weight: 175, distance: 100, offerCode: 'OFR003' },
+        { id: 'PKG5', weight: 155, distance: 95 },
+      ],
+    });
+  });
+
+  it('should get best scenario based on total weight carried by vehicle: 3 packages (Step 02)', () => {
+    const vehicle: Vehicle = createVehicle({
+      id: 'VEHICLE_1',
+      maxSpeed: 50,
+      maxWeight: 200,
+    });
+
+    const packages = mockPackages.filter((pkg) =>
+      ['PKG1', 'PKG3', 'PKG5'].includes(pkg.id)
+    );
+
+    const scenarios = simulatePackVehicle(vehicle, packages.map(createPackage));
+
+    const bestScenario = getBestScenario(
+      scenarios,
+      packages.map(createPackage)
+    );
+
+    expect(bestScenario).toEqual({
+      packages: [
+        { id: 'PKG3', weight: 175, distance: 100, offerCode: 'OFR003' },
+      ],
+      totalWeight: 175,
+      remainingPackages: [
+        { id: 'PKG1', weight: 50, distance: 30, offerCode: 'OFR001' },
+        { id: 'PKG5', weight: 155, distance: 95 },
+      ],
+    });
+  });
+
+  it('should get best scenario based on total weight carried by vehicle: 2 packages (Step 04)', () => {
+    const vehicle: Vehicle = createVehicle({
+      id: 'VEHICLE_1',
+      maxSpeed: 50,
+      maxWeight: 200,
+    });
+
+    const packages = mockPackages.filter((pkg) =>
+      ['PKG1', 'PKG5'].includes(pkg.id)
+    );
+
+    const scenarios = simulatePackVehicle(vehicle, packages.map(createPackage));
+
+    const bestScenario = getBestScenario(
+      scenarios,
+      packages.map(createPackage)
+    );
+
+    expect(bestScenario).toEqual({
+      packages: [{ id: 'PKG5', weight: 155, distance: 95 }],
+      totalWeight: 155,
+      remainingPackages: [
+        { id: 'PKG1', weight: 50, distance: 30, offerCode: 'OFR001' },
+      ],
+    });
+  });
+
+  it('should get best scenario based on total weight carried by vehicle: 1 packages (Step 06)', () => {
+    const vehicle: Vehicle = createVehicle({
+      id: 'VEHICLE_1',
+      maxSpeed: 50,
+      maxWeight: 200,
+    });
+
+    const packages = mockPackages.filter((pkg) => pkg.id === 'PKG1');
+
+    const scenarios = simulatePackVehicle(vehicle, packages.map(createPackage));
+
+    const bestScenario = getBestScenario(
+      scenarios,
+      packages.map(createPackage)
+    );
+
+    expect(bestScenario).toEqual({
+      packages: [{ id: 'PKG1', weight: 50, distance: 30, offerCode: 'OFR001' }],
+      totalWeight: 50,
+      remainingPackages: [],
+    });
   });
 });
