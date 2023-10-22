@@ -1,5 +1,5 @@
 import { Offer } from '../models/offer';
-import offers from './offers.json';
+import offers from './static/offers.json';
 
 export const getOffer = (offerCode: string) => {
   const offer = offers.find((offer) => offer.id === offerCode);
