@@ -159,15 +159,8 @@ export const prompt = async (promptOptions: PromptOptions = {}) => {
     default: true,
   });
 
-  if (check) {
-    return options;
-  } else {
-    prompt({});
-  }
-
   return {
-    order,
-    packages,
-    vehicles,
+    confirm: check,
+    options,
   };
 };

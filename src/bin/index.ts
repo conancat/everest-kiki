@@ -44,7 +44,11 @@ async function main() {
 
   console.log('\n🧹 Please tell us more about your order\n');
 
-  const options = await prompt(result.data);
+  const { options, confirm } = await prompt(result.data);
+
+  if (!confirm) {
+    return main();
+  }
 
   const vehicles = Array(options.vehicles.vehiclesCount)
     .fill(0)
