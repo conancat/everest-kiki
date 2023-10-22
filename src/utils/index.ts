@@ -3,7 +3,7 @@ import { Package } from '../models/package';
 import { Vehicle } from '../models/vehicle';
 
 export const sortPackages = (packages: Package[]) =>
-  packages.toSorted((a: Package, b: Package) => {
+  packages.sort((a: Package, b: Package) => {
     if (a.weight > b.weight) {
       return -1;
     } else if (a.weight < b.weight) {
@@ -24,7 +24,7 @@ export const sortPackages = (packages: Package[]) =>
  */
 
 export const getNextAvailableVehicle = (vehicles: Vehicle[]): Vehicle => {
-  return vehicles.toSorted((a, b) => a.totalTravelTime - b.totalTravelTime)[0];
+  return vehicles.sort((a, b) => a.totalTravelTime - b.totalTravelTime)[0];
 };
 
 export const formatZodError = (error: ZodError) => {

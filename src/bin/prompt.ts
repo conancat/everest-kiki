@@ -1,4 +1,7 @@
-import inquirer from 'inquirer';
+import { input, confirm } from '@inquirer/prompts';
+
+import Table from 'cli-table3';
+
 import {
   validateBaseCostInput,
   validatePackageInput,
@@ -33,34 +36,27 @@ type PromptOneOptions = {
 };
 
 const askFor = async (options: PromptOneOptions) => {
-  const inputs = await inquirer.prompt({
-    type: 'input',
-    name: options.key,
+  const results = await input({
     message: options.message,
-    suffix: ` [${options.key}]:`,
     validate: options.validate,
   });
 
-  const result = options.parse(inputs[options.key]);
-
-  return result;
+  return options.parse(results);
 };
 
 const promptPackagesInput = async (count: number) => {
-  const prompts = Array.from({ length: count }).map((_, i) => ({
-    type: 'input',
-    name: `package_${i + 1}`,
-    message: `Package ${i + 1}`,
-    suffix: ' [<id> <weight> <distance> [offerCode]]:',
-    validate: validatePackageInput,
-  }));
+  const packages: any[] = [];
 
-  const results = await inquirer.prompt(prompts);
+  for (let i = 0; i < count; i++) {
+    const result = await input({
+      message: `📦 Enter package ${
+        i + 1
+      } details [<id> <weight> <distance> [offerCode]]:`,
+      validate: validatePackageInput,
+    });
 
-  const packages = Object.values(results).map((input) =>
-    parsePackageInput(input as string)
-  );
-
+    packages.push(parsePackageInput(result));
+  }
   return packages;
 };
 
@@ -70,7 +66,7 @@ export const prompt = async (promptOptions: PromptOptions = {}) => {
       promptOptions.baseCost ||
       (await askFor({
         key: 'baseCost',
-        message: 'Enter order base cost',
+        message: '🧾 Enter order base cost [baseCost]: ',
         validate: validateBaseCostInput,
         parse: parseBaseCostInput,
       })),
@@ -78,7 +74,7 @@ export const prompt = async (promptOptions: PromptOptions = {}) => {
       promptOptions.packagesCount ||
       (await askFor({
         key: 'packagesCount',
-        message: 'Enter order packages count',
+        message: '🧾 Enter order packages count [packagesCount]: ',
         validate: validatePackagesCountInput,
         parse: parsePackagesCountInput,
       })),
@@ -91,7 +87,7 @@ export const prompt = async (promptOptions: PromptOptions = {}) => {
       promptOptions.vehiclesCount ||
       (await askFor({
         key: 'vehiclesCount',
-        message: 'Enter vehicles count',
+        message: '🛵 Enter vehicles count [vehiclesCount]: ',
         validate: validateVehiclesCountInput,
         parse: parseVehiclesCountInput,
       })),
@@ -99,7 +95,7 @@ export const prompt = async (promptOptions: PromptOptions = {}) => {
       promptOptions.vehiclesMaxSpeed ||
       (await askFor({
         key: 'vehiclesMaxSpeed',
-        message: 'Enter vehicles max speed',
+        message: '🛵 Enter vehicles max speed [vehiclesMaxSpeed]: ',
         validate: validateVehiclesMaxSpeedInput,
         parse: parseVehiclesMaxSpeedInput,
       })),
@@ -107,7 +103,7 @@ export const prompt = async (promptOptions: PromptOptions = {}) => {
       promptOptions.vehiclesMaxWeight ||
       (await askFor({
         key: 'vehiclesMaxWeight',
-        message: 'Enter vehicles max weight',
+        message: '🛵 Enter vehicles max weight [vehiclesMaxWeight]: ',
         validate: validateVehiclesMaxWeightInput,
         parse: parseVehiclesMaxWeightInput,
       })),
@@ -119,13 +115,59 @@ export const prompt = async (promptOptions: PromptOptions = {}) => {
     vehicles,
   };
 
-  // console.log('Your order is as follows:');
+  const orderOptionsTable = new Table({
+    head: ['Base Cost', 'Packages Count'],
+    style: { head: ['cyan'] },
+  });
+  orderOptionsTable.push([order.baseCost, order.packagesCount]);
 
-  console.table(options.packages);
+  const packagesTable = new Table({
+    head: ['ID', 'Weight', 'Distance', 'Offer Code'],
+    style: { head: ['cyan'] },
+  });
 
-  // return {
-  //   order,
-  //   packages,
-  //   vehicles,
-  // };
+  packages.forEach((pkg) => {
+    packagesTable.push([
+      pkg.id,
+      pkg.weight,
+      pkg.distance,
+      pkg.offerCode || '-',
+    ]);
+  });
+
+  const vehiclesOptionsTable = new Table({
+    head: ['Count', 'Max Speed', 'Max Weight'],
+    style: { head: ['cyan'] },
+  });
+  vehiclesOptionsTable.push([
+    vehicles.vehiclesCount,
+    vehicles.vehiclesMaxSpeed,
+    vehicles.vehiclesMaxWeight,
+  ]);
+
+  console.log('\n🧾 Order Request');
+  console.log(orderOptionsTable.toString());
+
+  console.log('\n📦 Packages List');
+  console.log(packagesTable.toString());
+
+  console.log('\n🛵 Available Vehicles');
+  console.log(vehiclesOptionsTable.toString());
+
+  const check = await confirm({
+    message: 'Proceed to place order?',
+    default: true,
+  });
+
+  if (check) {
+    return options;
+  } else {
+    prompt({});
+  }
+
+  return {
+    order,
+    packages,
+    vehicles,
+  };
 };

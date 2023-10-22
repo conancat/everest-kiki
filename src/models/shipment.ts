@@ -5,12 +5,16 @@ import { Vehicle } from './vehicle';
 export type ShipmentProps = {
   packages: Package[];
   totalWeight: number;
+  totalDistance: number;
+  totalCost: number;
   vehicle: Vehicle;
 };
 
 type ShipmentScenario = {
   packages: Package[];
   totalWeight: number;
+  totalDistance: number;
+  totalCost: number;
 };
 
 type ShipmentScenarios = ShipmentScenario[];
@@ -24,8 +28,8 @@ export interface Shipment {
   packages: Package[];
   vehicle: Vehicle;
   totalWeight: number;
+  totalDistance: number;
   totalCost: number;
-  arrivalTime: number;
   simulate(packages: Package[], vehicle: Vehicle): ShipmentScenarios;
   plan(packages: Package[]): ShipmentPlan;
 }
@@ -34,6 +38,8 @@ export class Shipment implements Shipment {
   constructor(props: ShipmentProps) {
     this.packages = props.packages;
     this.totalWeight = props.totalWeight;
+    this.totalCost = props.totalCost;
+    this.totalDistance = props.totalDistance;
     this.vehicle = props.vehicle;
   }
 
@@ -55,6 +61,8 @@ export class Shipment implements Shipment {
       const scenario: ShipmentScenario = {
         packages: [],
         totalWeight: 0,
+        totalDistance: 0,
+        totalCost: 0,
       };
 
       let remainingWeight = vehicle.maxWeight;
@@ -63,6 +71,8 @@ export class Shipment implements Shipment {
         if (remainingWeight - pkg.weight >= 0) {
           scenario.packages.push(pkg);
           scenario.totalWeight += pkg.weight;
+          scenario.totalCost += pkg.totalCost;
+          scenario.totalDistance += pkg.distance;
           remainingWeight -= pkg.weight;
         }
       }
