@@ -6,10 +6,11 @@ import { Vehicle } from './vehicle';
 interface Order {
   packages: Package[];
   shipments: Shipment[];
-  weight: number;
-  distance: number;
+  totalWeight: number;
+  totalDistance: number;
   totalDiscount: number;
   totalDeliveryCost: number;
+  finalCost: number;
   plan(vehicles: Vehicle[]): Order;
   calculate(): Order;
 }
@@ -41,18 +42,23 @@ class Order implements Order {
     return this;
   }
 
+  private sumPackagesByAttribute(
+    attribute: 'weight' | 'distance' | 'deliveryCost' | 'discount'
+  ): number {
+    return this.packages.reduce(
+      (total, pkg) => total + (pkg[attribute] as number),
+      0
+    );
+  }
+
   calculate(): Order {
     this.packages.forEach((pkg) => pkg.calculate());
 
-    this.totalDeliveryCost = this.packages.reduce(
-      (total, pkg) => total + pkg.deliveryCost,
-      0
-    );
-
-    this.totalDiscount = this.packages.reduce(
-      (total, pkg) => total + pkg.discount,
-      0
-    );
+    this.totalWeight = this.sumPackagesByAttribute('weight');
+    this.totalDistance = this.sumPackagesByAttribute('distance');
+    this.totalDeliveryCost = this.sumPackagesByAttribute('deliveryCost');
+    this.totalDiscount = this.sumPackagesByAttribute('discount');
+    this.finalCost = this.totalDeliveryCost - this.totalDiscount;
 
     return this;
   }

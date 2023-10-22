@@ -130,9 +130,7 @@ describe('Order.prototype.calculate()', () => {
   it('should calculate the costs for shipments in an order', () => {
     const order = createOrder({ packages: mockPackages, baseCost: 100 });
 
-    order.calculate();
-
-    expect(order.packages).toEqual([
+    const expectedPackages = [
       {
         id: 'PKG1',
         weight: 50,
@@ -189,6 +187,15 @@ describe('Order.prototype.calculate()', () => {
         discount: 0,
         totalCost: 2125,
       },
-    ]);
+    ];
+
+    order.calculate();
+
+    expect(order.packages).toEqual(expectedPackages);
+    expect(order.totalWeight).toBe(565);
+    expect(order.totalDistance).toBe(410);
+    expect(order.totalDeliveryCost).toBe(8200);
+    expect(order.totalDiscount).toBe(105);
+    expect(order.finalCost).toBe(8095);
   });
 });
