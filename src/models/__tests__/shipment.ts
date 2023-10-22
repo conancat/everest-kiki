@@ -405,7 +405,7 @@ describe('shipment.commit()', () => {
         distance: 60,
         offerCode: 'OFR002',
         deliveryTime: 1.2,
-        finalDeliveryTime: 1.2,
+        arrivalTime: 1.2,
       },
       {
         id: 'PKG2',
@@ -413,7 +413,7 @@ describe('shipment.commit()', () => {
         distance: 125,
         offerCode: 'OFR008',
         deliveryTime: 2.5,
-        finalDeliveryTime: 2.5,
+        arrivalTime: 2.5,
       },
     ];
 

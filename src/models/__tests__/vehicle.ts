@@ -131,9 +131,9 @@ describe('createVehicle()', () => {
     expect(vehicle.deliveries[0]).toEqual(delivery1);
     expect(vehicle.deliveries[1]).toEqual(delivery2);
 
-    expect(delivery1[0].finalDeliveryTime).toBe(1.78);
-    expect(delivery1[1].finalDeliveryTime).toBe(0.85);
-    expect(delivery2[0].finalDeliveryTime).toBe(3.98);
+    expect(delivery1[0].arrivalTime).toBe(1.78);
+    expect(delivery1[1].arrivalTime).toBe(0.85);
+    expect(delivery2[0].arrivalTime).toBe(3.98);
   });
 
   it("should calculate the vehicle's total travel time after multiple deliveries (Vehicle 2)", () => {
@@ -175,7 +175,7 @@ describe('createVehicle()', () => {
     expect(vehicle.deliveries[0]).toEqual(delivery1);
     expect(vehicle.deliveries[1]).toEqual(delivery2);
 
-    expect(vehicle.packages[0].finalDeliveryTime).toBe(1.42);
-    expect(vehicle.packages[1].finalDeliveryTime).toBe(4.19);
+    expect(vehicle.packages[0].arrivalTime).toBe(1.42);
+    expect(vehicle.packages[1].arrivalTime).toBe(4.19);
   });
 });

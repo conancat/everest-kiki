@@ -23,7 +23,7 @@ describe('createOrder()', () => {
   });
 });
 
-describe('order.plan()', () => {
+describe('Order.prototype.plan()', () => {
   it('should plan delivery and set delivery time for all packages', () => {
     const vehicle1 = createVehicle({
       id: 'VEHICLE_1',
@@ -44,7 +44,7 @@ describe('order.plan()', () => {
         distance: 30,
         offerCode: 'OFR001',
         deliveryTime: 0.42,
-        finalDeliveryTime: 3.98,
+        arrivalTime: 3.98,
       },
       {
         id: 'PKG2',
@@ -52,7 +52,7 @@ describe('order.plan()', () => {
         distance: 125,
         offerCode: 'OFR008',
         deliveryTime: 1.78,
-        finalDeliveryTime: 1.78,
+        arrivalTime: 1.78,
       },
       {
         id: 'PKG3',
@@ -60,7 +60,7 @@ describe('order.plan()', () => {
         distance: 100,
         offerCode: 'OFR003',
         deliveryTime: 1.42,
-        finalDeliveryTime: 1.42,
+        arrivalTime: 1.42,
       },
       {
         id: 'PKG4',
@@ -68,14 +68,14 @@ describe('order.plan()', () => {
         distance: 60,
         offerCode: 'OFR002',
         deliveryTime: 0.85,
-        finalDeliveryTime: 0.85,
+        arrivalTime: 0.85,
       },
       {
         id: 'PKG5',
         weight: 155,
         distance: 95,
         deliveryTime: 1.35,
-        finalDeliveryTime: 4.19,
+        arrivalTime: 4.19,
       },
     ];
 
@@ -123,5 +123,72 @@ describe('order.plan()', () => {
 
     expect(vehicle1.totalTravelTime).toBe(4.4);
     expect(vehicle2.totalTravelTime).toBe(5.54);
+  });
+});
+
+describe('Order.prototype.calculate()', () => {
+  it('should calculate the costs for shipments in an order', () => {
+    const order = createOrder({ packages: mockPackages, baseCost: 100 });
+
+    order.calculate();
+
+    expect(order.packages).toEqual([
+      {
+        id: 'PKG1',
+        weight: 50,
+        distance: 30,
+        offerCode: 'OFR001',
+        deliveryCost: 750,
+        discount: 0,
+        totalCost: 750,
+      },
+      {
+        id: 'PKG2',
+        weight: 75,
+        distance: 125,
+        offerCode: 'OFR008',
+        deliveryCost: 1475,
+        discount: 0,
+        totalCost: 1475,
+      },
+      {
+        id: 'PKG3',
+        weight: 175,
+        distance: 100,
+        offerCode: 'OFR003',
+        deliveryCost: 2350,
+        discount: 0,
+        totalCost: 2350,
+      },
+      {
+        id: 'PKG4',
+        weight: 110,
+        distance: 60,
+        offerCode: 'OFR002',
+        deliveryCost: 1500,
+        discount: 105,
+        offer: {
+          id: 'OFR002',
+          percent: 7,
+          distance: {
+            min: 50,
+            max: 150,
+          },
+          weight: {
+            min: 100,
+            max: 250,
+          },
+        },
+        totalCost: 1395,
+      },
+      {
+        id: 'PKG5',
+        weight: 155,
+        distance: 95,
+        deliveryCost: 2125,
+        discount: 0,
+        totalCost: 2125,
+      },
+    ]);
   });
 });

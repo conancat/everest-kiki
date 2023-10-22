@@ -101,7 +101,7 @@ describe('planDelivery()', () => {
         distance: 30,
         offerCode: 'OFR001',
         deliveryTime: 0.42,
-        finalDeliveryTime: 3.98,
+        arrivalTime: 3.98,
       },
       {
         id: 'PKG2',
@@ -109,7 +109,7 @@ describe('planDelivery()', () => {
         distance: 125,
         offerCode: 'OFR008',
         deliveryTime: 1.78,
-        finalDeliveryTime: 1.78,
+        arrivalTime: 1.78,
       },
       {
         id: 'PKG3',
@@ -117,7 +117,7 @@ describe('planDelivery()', () => {
         distance: 100,
         offerCode: 'OFR003',
         deliveryTime: 1.42,
-        finalDeliveryTime: 1.42,
+        arrivalTime: 1.42,
       },
       {
         id: 'PKG4',
@@ -125,14 +125,14 @@ describe('planDelivery()', () => {
         distance: 60,
         offerCode: 'OFR002',
         deliveryTime: 0.85,
-        finalDeliveryTime: 0.85,
+        arrivalTime: 0.85,
       },
       {
         id: 'PKG5',
         weight: 155,
         distance: 95,
         deliveryTime: 1.35,
-        finalDeliveryTime: 4.19,
+        arrivalTime: 4.19,
       },
     ]);
 

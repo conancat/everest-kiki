@@ -25,7 +25,7 @@ export interface Shipment {
   vehicle: Vehicle;
   totalWeight: number;
   totalCost: number;
-  finalDeliveryTime: number;
+  arrivalTime: number;
   simulate(packages: Package[], vehicle: Vehicle): ShipmentScenarios;
   plan(packages: Package[]): ShipmentPlan;
 }

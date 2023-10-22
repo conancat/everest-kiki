@@ -8,8 +8,10 @@ interface Order {
   shipments: Shipment[];
   weight: number;
   distance: number;
-  deliveryCost: number;
+  totalDiscount: number;
+  totalDeliveryCost: number;
   plan(vehicles: Vehicle[]): Order;
+  calculate(): Order;
 }
 
 type OrderProps = {
@@ -35,6 +37,22 @@ class Order implements Order {
       remainingPackages = plan.remainingPackages;
       this.shipments.push(plan.shipment);
     }
+
+    return this;
+  }
+
+  calculate(): Order {
+    this.packages.forEach((pkg) => pkg.calculate());
+
+    this.totalDeliveryCost = this.packages.reduce(
+      (total, pkg) => total + pkg.deliveryCost,
+      0
+    );
+
+    this.totalDiscount = this.packages.reduce(
+      (total, pkg) => total + pkg.discount,
+      0
+    );
 
     return this;
   }

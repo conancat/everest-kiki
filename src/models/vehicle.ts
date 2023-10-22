@@ -8,7 +8,7 @@ export interface Vehicle {
   packages: Package[];
   deliveries: Package[][];
   calculateDeliveryTime(pkg: Package): number;
-  calculatefinalDeliveryTime(pkgs: Package): number;
+  calculatearrivalTime(pkgs: Package): number;
   deliverPackages(pkgs: Package[]): Vehicle;
 }
 
@@ -34,7 +34,7 @@ export class Vehicle implements Vehicle {
       Math.floor((pkg.distance / this.maxSpeed + Number.EPSILON) * 100) / 100
     );
   }
-  calculatefinalDeliveryTime(pkg: Package) {
+  calculatearrivalTime(pkg: Package) {
     return (
       Math.floor(
         (pkg.distance / this.maxSpeed + this.totalTravelTime + Number.EPSILON) *
@@ -47,7 +47,7 @@ export class Vehicle implements Vehicle {
     const deliveryPackages = pkgs.map((pkg) =>
       pkg
         .setDeliveryTime(this.calculateDeliveryTime(pkg))
-        .setfinalDeliveryTime(this.calculatefinalDeliveryTime(pkg))
+        .setArrivalTime(this.calculatearrivalTime(pkg))
     );
 
     const maxDeliveryTime = deliveryPackages
