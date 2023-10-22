@@ -7,14 +7,14 @@ type Range = {
 
 export interface Offer {
   id: string;
-  discount: number;
+  percent: number;
   distance: Range;
   weight: Range;
 }
 
 export type OfferProps = {
   id: string;
-  discount: number;
+  percent: number;
   distance: Range;
   weight: Range;
 };
@@ -22,7 +22,7 @@ export type OfferProps = {
 export class Offer implements Offer {
   constructor(props: OfferProps) {
     this.id = props.id;
-    this.discount = props.discount;
+    this.percent = props.percent;
     this.distance = props.distance;
     this.weight = props.weight;
   }
@@ -36,10 +36,10 @@ export class Offer implements Offer {
   }
 
   calculate(pkg: Package): number {
-    const discount =
-      (Math.floor(pkg.deliveryCost * (this.discount / 100) + Number.EPSILON) *
+    const percent =
+      (Math.floor(pkg.deliveryCost * (this.percent / 100) + Number.EPSILON) *
         100) /
       100;
-    return discount;
+    return percent;
   }
 }

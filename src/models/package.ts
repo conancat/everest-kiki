@@ -9,13 +9,14 @@ export interface Package {
   deliveryCost: number;
   discount: number;
   totalCost: number;
+  offer?: Offer;
   offerCode?: string;
   vehicle?: Vehicle;
   deliveryTime?: number;
-  totalDeliveryTime?: number;
+  finalDeliveryTime?: number;
   setVehicle(vehicle: Vehicle): Package;
   setDeliveryTime(time: number): Package;
-  setTotalDeliveryTime(time: number): Package;
+  setfinalDeliveryTime(time: number): Package;
 }
 
 export type PackageProps = {
@@ -65,6 +66,7 @@ export class Package implements Package {
     }
 
     if (offer.test(this)) {
+      this.offer = offer;
       this.discount = offer.calculate(this);
     }
 
@@ -79,8 +81,8 @@ export class Package implements Package {
     this.deliveryTime = time;
     return this;
   }
-  setTotalDeliveryTime(time: number): this {
-    this.totalDeliveryTime = time;
+  setfinalDeliveryTime(time: number): this {
+    this.finalDeliveryTime = time;
     return this;
   }
 }

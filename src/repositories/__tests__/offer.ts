@@ -10,7 +10,7 @@ describe('getOffer()', () => {
     expect(offer instanceof Offer).toBe(true);
 
     expect(offer.id).toBe('OFR001');
-    expect(offer.discount).toBe(10);
+    expect(offer.percent).toBe(10);
     expect(offer.distance.min).toBe(0);
     expect(offer.distance.max).toBe(200);
     expect(offer.weight.min).toBe(70);

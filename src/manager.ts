@@ -1,10 +1,9 @@
 import { Package } from './models/package';
+import Shipment from './models/shipment';
 import { Vehicle } from './models/vehicle';
 
-import { getBestScenario, simulatePackVehicle } from './utils';
-
 /**
- * Select the next available vehicle based on the total travel time.
+ * Select the next available vehicle based on the vehicle's travel time.
  * @param vehicles
  * @returns Vehicle
  */
@@ -12,18 +11,6 @@ import { getBestScenario, simulatePackVehicle } from './utils';
 export const getNextAvailableVehicle = (vehicles: Vehicle[]): Vehicle => {
   return vehicles.toSorted((a, b) => a.totalTravelTime - b.totalTravelTime)[0];
 };
-
-/**
- * Create a route plan for the given vehicles and packages.
- * Each vehicle should be assigned a collection of packages to deliver based on the following criteria:
- * 1. The total weight of the packages assigned to a vehicle cannot exceed the vehicle's maxWeight.
- * 2. Vehicle should return to the starting point after delivering all packages, then continue delivering the remaining packages.
- * 3. Vehicle should select packages based on best packing scenario
- *
- * @param vehicles - A collection of vehicles
- * @param packages - A collection of packages
- * @returns Vehicles, packages
- */
 
 type DeliveryPlan = {
   vehicles: Vehicle[];
@@ -36,6 +23,14 @@ export const calculateCosts = (packages: Package[]): Package[] =>
     return pkg;
   });
 
+/**
+ * Create a delivery plan for the given vehicles and packages.
+ *
+ * @param vehicles - A collection of vehicles
+ * @param packages - A collection of packages
+ * @returns Vehicles, packages
+ */
+
 export const planDelivery = (
   vehicles: Vehicle[],
   packages: Package[]
@@ -44,12 +39,9 @@ export const planDelivery = (
 
   while (remainingPackages.length > 0) {
     const vehicle = getNextAvailableVehicle(vehicles);
-
-    const scenarios = simulatePackVehicle(vehicle, remainingPackages);
-    const bestScenario = getBestScenario(scenarios, remainingPackages);
-
-    vehicle.deliverPackages(bestScenario.packages);
-    remainingPackages = bestScenario.remainingPackages;
+    const plan = Shipment.plan(remainingPackages, vehicle);
+    plan.shipment.commit();
+    remainingPackages = plan.remainingPackages;
   }
 
   return { vehicles, packages };

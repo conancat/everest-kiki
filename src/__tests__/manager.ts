@@ -46,6 +46,18 @@ describe('calculateCosts()', () => {
         offerCode: 'OFR002',
         deliveryCost: 1500,
         discount: 105,
+        offer: {
+          id: 'OFR002',
+          percent: 7,
+          distance: {
+            min: 50,
+            max: 150,
+          },
+          weight: {
+            min: 100,
+            max: 250,
+          },
+        },
         totalCost: 1395,
       },
       {
@@ -89,7 +101,7 @@ describe('planDelivery()', () => {
         distance: 30,
         offerCode: 'OFR001',
         deliveryTime: 0.42,
-        totalDeliveryTime: 3.98,
+        finalDeliveryTime: 3.98,
       },
       {
         id: 'PKG2',
@@ -97,7 +109,7 @@ describe('planDelivery()', () => {
         distance: 125,
         offerCode: 'OFR008',
         deliveryTime: 1.78,
-        totalDeliveryTime: 1.78,
+        finalDeliveryTime: 1.78,
       },
       {
         id: 'PKG3',
@@ -105,7 +117,7 @@ describe('planDelivery()', () => {
         distance: 100,
         offerCode: 'OFR003',
         deliveryTime: 1.42,
-        totalDeliveryTime: 1.42,
+        finalDeliveryTime: 1.42,
       },
       {
         id: 'PKG4',
@@ -113,14 +125,14 @@ describe('planDelivery()', () => {
         distance: 60,
         offerCode: 'OFR002',
         deliveryTime: 0.85,
-        totalDeliveryTime: 0.85,
+        finalDeliveryTime: 0.85,
       },
       {
         id: 'PKG5',
         weight: 155,
         distance: 95,
         deliveryTime: 1.35,
-        totalDeliveryTime: 4.19,
+        finalDeliveryTime: 4.19,
       },
     ]);
 

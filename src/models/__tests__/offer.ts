@@ -1,11 +1,11 @@
 import { Offer } from '../offer';
 import { Package } from '../package';
 
-describe('Offer constructor', () => {
+describe('new Offer()', () => {
   it('should return an Offer object when given required parameters', () => {
     const offer = new Offer({
       id: 'OFR001',
-      discount: 10,
+      percent: 10,
       distance: {
         min: 0,
         max: 200,
@@ -18,7 +18,7 @@ describe('Offer constructor', () => {
 
     expect(offer instanceof Offer).toBe(true);
     expect(offer.id).toBe('OFR001');
-    expect(offer.discount).toBe(10);
+    expect(offer.percent).toBe(10);
     expect(offer.distance.min).toBe(0);
     expect(offer.distance.max).toBe(200);
     expect(offer.weight.min).toBe(70);
@@ -30,7 +30,7 @@ describe('offer.test(pkg)', () => {
   it('should return true if an Offer can be applied to a Package', () => {
     const offer = new Offer({
       id: 'OFR001',
-      discount: 10,
+      percent: 10,
       distance: {
         min: 0,
         max: 200,
@@ -55,7 +55,7 @@ describe('offer.test(pkg)', () => {
   it("should return false if a Package's distance is below Offer's allowed range", () => {
     const offer = new Offer({
       id: 'OFR001',
-      discount: 10,
+      percent: 10,
       distance: {
         min: 100,
         max: 200,
@@ -80,7 +80,7 @@ describe('offer.test(pkg)', () => {
   it("should return false if a Package's distance is above Offer's allowed range", () => {
     const offer = new Offer({
       id: 'OFR001',
-      discount: 10,
+      percent: 10,
       distance: {
         min: 0,
         max: 200,
@@ -105,7 +105,7 @@ describe('offer.test(pkg)', () => {
   it("should return false if a Package's weight is below Offer's allowed range", () => {
     const offer = new Offer({
       id: 'OFR001',
-      discount: 10,
+      percent: 10,
       distance: {
         min: 0,
         max: 200,
@@ -130,7 +130,7 @@ describe('offer.test(pkg)', () => {
   it("should return false if a Package's weight is above Offer's allowed range", () => {
     const offer = new Offer({
       id: 'OFR001',
-      discount: 10,
+      percent: 10,
       distance: {
         min: 0,
         max: 200,
@@ -157,7 +157,7 @@ describe('offer.calculate(pkg)', () => {
   it("should calculate discount amount for Package that matches the Offer's conditions", () => {
     const offer = new Offer({
       id: 'OFR003',
-      discount: 5,
+      percent: 5,
       distance: {
         min: 50,
         max: 250,
@@ -177,8 +177,8 @@ describe('offer.calculate(pkg)', () => {
 
     pkg.calculate();
 
-    const discount = offer.calculate(pkg);
+    const percent = offer.calculate(pkg);
 
-    expect(discount).toBe(35);
+    expect(percent).toBe(35);
   });
 });

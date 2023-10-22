@@ -1,11 +1,8 @@
 import mockPackages from './__mocks__/packages.json';
-import { calculateCosts, planDelivery } from './manager';
-import { createPackage } from './models/package';
+import { createOrder } from './models/order';
 import { createVehicle } from './models/vehicle';
 
-const packages = mockPackages.map((pkg) =>
-  createPackage({ ...pkg, baseCost: 100 })
-);
+const packages = mockPackages;
 const vehicles = Array.from({ length: 2 }).map((_, i) =>
   createVehicle({
     id: `VEHICLE_${i}`,
@@ -14,7 +11,11 @@ const vehicles = Array.from({ length: 2 }).map((_, i) =>
   })
 );
 
-calculateCosts(packages);
-planDelivery(vehicles, packages);
+const order = createOrder({
+  packages,
+  baseCost: 100,
+});
 
-console.log(JSON.stringify({ vehicles, packages }, null, 2));
+order.plan(vehicles);
+
+console.log(JSON.stringify(order, null, 2));
