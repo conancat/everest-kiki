@@ -153,7 +153,7 @@ describe('offer.test(pkg)', () => {
   });
 });
 
-describe('offer.calculate(pkg)', () => {
+describe('Offer.prototype.calculate(pkg)', () => {
   it("should calculate discount amount for Package that matches the Offer's conditions", () => {
     const offer = new Offer({
       id: 'OFR003',

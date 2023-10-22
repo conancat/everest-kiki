@@ -33,7 +33,7 @@ describe('createPackage()', () => {
   });
 });
 
-describe('Package.setDeliveryTime()', () => {
+describe('Package.prototype.setDeliveryTime()', () => {
   it('should set the deliveryTime property of a Package object', () => {
     const pkg = createPackage({
       id: 'PKG1',
@@ -47,7 +47,7 @@ describe('Package.setDeliveryTime()', () => {
   });
 });
 
-describe('Package.calculateDeliveryCost()', () => {
+describe('Package.prototype.calculateDeliveryCost()', () => {
   it('should calculate delivery cost of Package object: PKG1', () => {
     const pkg = createPackage({
       id: 'PKG1',
@@ -91,7 +91,7 @@ describe('Package.calculateDeliveryCost()', () => {
   });
 });
 
-describe('Package.calculateDeliveryCost()', () => {
+describe('Package.prototype.calculateDiscount()', () => {
   it('should calculate discount of Package object: PKG1', () => {
     const pkg = createPackage({
       id: 'PKG1',
@@ -138,7 +138,7 @@ describe('Package.calculateDeliveryCost()', () => {
   });
 });
 
-describe('Package.calculate()', () => {
+describe('Package.prototype.calculate()', () => {
   it('should calculate total cost of Package object: PKG1', () => {
     const pkg = createPackage({
       id: 'PKG1',

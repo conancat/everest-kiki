@@ -389,7 +389,7 @@ describe('Shipment.plan()', () => {
   });
 });
 
-describe('shipment.commit()', () => {
+describe('Shipment.prototype.commit()', () => {
   it('should commit shipment to vehicle: 5 packages (Step 01)', () => {
     const vehicle: Vehicle = createVehicle({
       id: 'VEHICLE_1',
