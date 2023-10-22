@@ -1,11 +1,5 @@
-import { Package } from './models/package';
-import { Vehicle } from './models/vehicle';
-
-type VehiclePackingScenario = {
-  packages: Package[];
-  totalWeight: number;
-};
-type VehiclePackingScenarios = VehiclePackingScenario[];
+import { Package } from '../models/package';
+import { Vehicle } from '../models/vehicle';
 
 export const sortPackages = (packages: Package[]) =>
   packages.toSorted((a: Package, b: Package) => {

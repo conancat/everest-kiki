@@ -1,4 +1,4 @@
-import { getOffer } from '../repositories/offer';
+import { getOffer } from '../services/offer';
 import { Offer } from './offer';
 import { Vehicle } from './vehicle';
 

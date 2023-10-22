@@ -1,7 +1,5 @@
-import { Package, createPackage } from '../models/package';
-import mockPackages from '../__mocks__/packages.json';
-import { sortPackages } from '../utils';
-import { Vehicle, createVehicle } from '../models/vehicle';
+import { Package, createPackage } from '../../models/package';
+import { sortPackages } from '..';
 
 describe('sortPackages()', () => {
   it('should sort packages by weight in descending order when packages weights are not the same', () => {
