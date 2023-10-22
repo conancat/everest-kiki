@@ -1,5 +1,5 @@
 import type { ZodSchema } from 'zod';
-import {
+import schemas, {
   OrderInputSchema,
   PackageInputSchema,
   VehiclesInputSchema,
@@ -23,22 +23,51 @@ type VehiclesInput = {
   maxWeight: number;
 };
 
-const parseInput = (input: string, keys: string[], schema: ZodSchema) => {
-  const arr = input.split(' ');
-  const obj = Object.fromEntries(keys.map((key, index) => [key, arr[index]]));
-  return schema.parse(obj);
-};
+export const parseInput =
+  <T>(schema: ZodSchema, keys?: string[]) =>
+  (input: string): T => {
+    if (!keys) {
+      return schema.parse(input);
+    }
 
-export const parseOrderInput = (input: string): OrderInput => {
-  return parseInput(input, ['baseCost', 'packagesCount'], OrderInputSchema);
-};
+    const arr = input.split(' ');
+    const obj = Object.fromEntries(keys.map((key, index) => [key, arr[index]]));
+    return schema.parse(obj);
+  };
 
-export const parsePackageInput = (input: string): PackageInput =>
-  parseInput(
-    input,
-    ['id', 'weight', 'distance', 'offerCode'],
-    PackageInputSchema
-  );
+export const parseBaseCostInput = parseInput<number>(
+  schemas.BaseCostInputSchema
+);
 
-export const parseVehicleInput = (input: string): VehiclesInput =>
-  parseInput(input, ['count', 'maxSpeed', 'maxWeight'], VehiclesInputSchema);
+export const parsePackagesCountInput = parseInput<number>(
+  schemas.PackagesCountInputSchema
+);
+
+export const parseVehiclesCountInput = parseInput<number>(
+  schemas.VehiclesCountInputSchema
+);
+
+export const parseVehiclesMaxSpeedInput = parseInput<number>(
+  schemas.VehiclesMaxSpeedInputSchema
+);
+
+export const parseVehiclesMaxWeightInput = parseInput<number>(
+  schemas.VehiclesMaxWeightInputSchema
+);
+
+export const parseOrderInput = parseInput<OrderInput>(OrderInputSchema, [
+  'baseCost',
+  'packagesCount',
+]);
+
+export const parsePackageInput = parseInput<PackageInput>(PackageInputSchema, [
+  'id',
+  'weight',
+  'distance',
+  'offerCode',
+]);
+
+export const parseVehicleInput = parseInput<VehiclesInput>(
+  VehiclesInputSchema,
+  ['count', 'maxSpeed', 'maxWeight']
+);

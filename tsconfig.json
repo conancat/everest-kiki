@@ -17,10 +17,6 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": [
-      "bun-types", // add Bun global
-      "jest"
-    ]
-  },
-  "include": ["src/**/*.ts", "src/**/*.json"]
+    "types": ["jest"]
+  }
 }

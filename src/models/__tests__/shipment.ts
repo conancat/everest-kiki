@@ -3,7 +3,6 @@ import { Vehicle, createVehicle } from '../vehicle';
 
 import mockPackages from '../../__mocks__/packages.json';
 import { createPackage } from '../package';
-import { create } from 'domain';
 
 describe('Shipment.simulate()', () => {
   it('should simulate possible vehicle packing scenarios: 5 packages (Step 01)', () => {

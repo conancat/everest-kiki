@@ -115,6 +115,16 @@ export const VehiclesInputSchema = z.object({
   maxWeight: VehiclesMaxWeightInputSchema,
 });
 
+export const ProgramInputSchema = z
+  .object({
+    baseCost: BaseCostInputSchema,
+    packagesCount: PackagesCountInputSchema,
+    vehiclesCount: VehiclesCountInputSchema,
+    vehiclesMaxSpeed: VehiclesMaxSpeedInputSchema,
+    vehiclesMaxWeight: VehiclesMaxWeightInputSchema,
+  })
+  .partial();
+
 export default {
   BaseCostInputSchema,
   PackagesCountInputSchema,

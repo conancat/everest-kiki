@@ -1,3 +1,4 @@
+import { ZodError } from 'zod';
 import { Package } from '../models/package';
 import { Vehicle } from '../models/vehicle';
 
@@ -24,4 +25,20 @@ export const sortPackages = (packages: Package[]) =>
 
 export const getNextAvailableVehicle = (vehicles: Vehicle[]): Vehicle => {
   return vehicles.toSorted((a, b) => a.totalTravelTime - b.totalTravelTime)[0];
+};
+
+export const formatZodError = (error: ZodError) => {
+  if (error.format()._errors.length) {
+    return error.format()._errors.join(', ');
+  }
+
+  return Object.entries(structuredClone(error.format()))
+    .filter(([key]) => key !== '_errors')
+    .map(
+      ([key, value]) =>
+        `${key}: ${(value as unknown as { _errors: string[] })._errors?.join(
+          ', '
+        )}`
+    )
+    .join(' | ');
 };

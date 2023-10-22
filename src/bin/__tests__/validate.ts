@@ -1,39 +1,40 @@
-import schemas from '../schemas';
-
-import { validateInput, validatePackageInput } from '../validate';
+import {
+  validateBaseCostInput,
+  validatePackagesCountInput,
+  validateVehiclesCountInput,
+  validateVehiclesMaxSpeedInput,
+  validateVehiclesMaxWeightInput,
+  validatePackageInput,
+} from '../validate';
 
 describe('validateInput()', () => {
   it('should validate input when given correct input', () => {
-    expect(validateInput('100', schemas.BaseCostInputSchema)).toBe(true);
+    expect(validateBaseCostInput('100')).toBe(true);
   });
 
   it('should throw error when given an empty input', () => {
-    expect(validateInput('', schemas.BaseCostInputSchema)).toBe(
-      'Please enter a valid input.'
-    );
+    expect(validatePackagesCountInput('')).toBe('Please enter a valid input.');
   });
 
   describe('Order options', () => {
     it('should throw error when given invalid baseCost input', () => {
-      expect(validateInput('meh', schemas.BaseCostInputSchema)).toBe(
-        'Base cost must be a number.'
-      );
+      expect(validateBaseCostInput('what')).toBe('Base cost must be a number.');
     });
 
     it('should throw error when baseCost is negative value', () => {
-      expect(validateInput('-1', schemas.BaseCostInputSchema)).toBe(
+      expect(validateBaseCostInput('-1')).toBe(
         'Base cost must be a positive number.'
       );
     });
 
     it('should throw error when given invalid packagesCount input', () => {
-      expect(validateInput('lol', schemas.PackagesCountInputSchema)).toBe(
+      expect(validatePackagesCountInput('lol')).toBe(
         'Packages count must be an integer.'
       );
     });
 
     it('should throw error when packagesCount is negative value', () => {
-      expect(validateInput('-1', schemas.PackagesCountInputSchema)).toBe(
+      expect(validatePackagesCountInput('-20')).toBe(
         'Packages count must be a positive integer.'
       );
     });
@@ -41,26 +42,38 @@ describe('validateInput()', () => {
 
   describe('Vehicles options', () => {
     it('should throw error when given invalid vehicle count', () => {
-      expect(validateInput('lol', schemas.VehiclesCountInputSchema)).toBe(
+      expect(validateVehiclesCountInput('lol')).toBe(
         'Vehicles count must be an integer.'
       );
     });
 
     it('should throw error when packagesCount is negative value', () => {
-      expect(validateInput('-1', schemas.VehiclesCountInputSchema)).toBe(
+      expect(validateVehiclesCountInput('-29')).toBe(
         'Vehicles count must be a positive integer.'
       );
     });
 
     it('should throw error when given invalid maxSpeed', () => {
-      expect(validateInput('lol', schemas.VehiclesMaxSpeedInputSchema)).toBe(
+      expect(validateVehiclesMaxSpeedInput('huh')).toBe(
         'Max speed must be an integer.'
       );
     });
 
+    it('should throw error when maxSpeed is negative value', () => {
+      expect(validateVehiclesMaxSpeedInput('-23')).toBe(
+        'Max speed must be a positive integer.'
+      );
+    });
+
     it('should throw error when given invalid maxWeight', () => {
-      expect(validateInput('lol', schemas.VehiclesMaxWeightInputSchema)).toBe(
+      expect(validateVehiclesMaxWeightInput('wow')).toBe(
         'Max weight must be an integer.'
+      );
+    });
+
+    it('should throw error when maxWeight is negative value', () => {
+      expect(validateVehiclesMaxWeightInput('-34')).toBe(
+        'Max weight must be a positive integer.'
       );
     });
   });
