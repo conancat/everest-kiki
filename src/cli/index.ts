@@ -1,8 +1,8 @@
+import { program } from 'commander';
+
 import { Options, prompt } from './prompt';
 
-import { program } from 'commander';
 import { ProgramInputSchema } from './schemas';
-import { formatZodError } from '../utils';
 import { createVehicle } from '../models/vehicle';
 import { createOrder } from '../models/order';
 
@@ -13,13 +13,6 @@ import {
   printShipments,
 } from './print';
 
-program
-  .option('-b, --base-cost <number>', 'Base cost')
-  .option('-p, --packages-count <number>', 'Packages count')
-  .option('-c, --vehicles-count <number>', 'Vehicles count')
-  .option('-s, --vehicles-max-speed <number>', 'Vehicles max speed')
-  .option('-w, --vehicles-max-weight <number>', 'Vehicles max weight');
-
 export type ProgramOptions = {
   baseCost?: number;
   packagesCount?: number;
@@ -27,6 +20,13 @@ export type ProgramOptions = {
   vehiclesMaxSpeed?: number;
   vehiclesMaxWeight?: number;
 };
+
+program
+  .option('-b, --base-cost <number>', 'Base cost')
+  .option('-p, --packages-count <number>', 'Packages count')
+  .option('-c, --vehicles-count <number>', 'Vehicles count')
+  .option('-s, --vehicles-max-speed <number>', 'Vehicles max speed')
+  .option('-w, --vehicles-max-weight <number>', 'Vehicles max weight');
 
 const buildOrder = (options: Options) => {
   const vehicles = Array(options.vehicles.vehiclesCount)
