@@ -81,7 +81,9 @@ describe('Order.prototype.plan()', () => {
 
     const expectedShipment1 = {
       packages: expect.arrayContaining(
-        expectedPackages.filter((pkg) => ['PKG2', 'PKG4'].includes(pkg.id))
+        expectedPackages
+          .filter((pkg) => ['PKG2', 'PKG4'].includes(pkg.id))
+          .map(expect.objectContaining)
       ),
       totalCost: 0,
       totalDistance: 185,
@@ -90,7 +92,9 @@ describe('Order.prototype.plan()', () => {
     };
 
     const expectedShipment2 = {
-      packages: expectedPackages.filter((pkg) => ['PKG3'].includes(pkg.id)),
+      packages: expectedPackages
+        .filter((pkg) => ['PKG3'].includes(pkg.id))
+        .map(expect.objectContaining),
       totalCost: 0,
       totalDistance: 100,
       totalWeight: 175,
@@ -98,7 +102,9 @@ describe('Order.prototype.plan()', () => {
     };
 
     const expectedShipment3 = {
-      packages: expectedPackages.filter((pkg) => ['PKG5'].includes(pkg.id)),
+      packages: expectedPackages
+        .filter((pkg) => ['PKG5'].includes(pkg.id))
+        .map(expect.objectContaining),
       totalCost: 0,
       totalDistance: 95,
       totalWeight: 155,
@@ -106,7 +112,9 @@ describe('Order.prototype.plan()', () => {
     };
 
     const expectedShipment4 = {
-      packages: expectedPackages.filter((pkg) => ['PKG1'].includes(pkg.id)),
+      packages: expectedPackages
+        .filter((pkg) => ['PKG1'].includes(pkg.id))
+        .map(expect.objectContaining),
       totalCost: 0,
       totalDistance: 30,
       totalWeight: 50,
@@ -118,7 +126,7 @@ describe('Order.prototype.plan()', () => {
       expectedShipment2,
       expectedShipment3,
       expectedShipment4,
-    ];
+    ].map(expect.objectContaining);
 
     const vehicles = [vehicle1, vehicle2];
 
@@ -126,7 +134,9 @@ describe('Order.prototype.plan()', () => {
 
     order.plan(vehicles);
 
-    expect(order.packages).toEqual(expect.arrayContaining(expectedPackages));
+    expect(order.packages).toEqual(
+      expect.arrayContaining(expectedPackages.map(expect.objectContaining))
+    );
 
     expect(order.shipments).toEqual(expectedShipments);
 
@@ -196,7 +206,7 @@ describe('Order.prototype.calculate()', () => {
         discount: 0,
         totalCost: 2125,
       },
-    ];
+    ].map(expect.objectContaining);
 
     order.calculate();
 

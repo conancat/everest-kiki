@@ -2,23 +2,6 @@ import { getOffer } from '../services/offer';
 import { Offer } from './offer';
 import { Vehicle } from './vehicle';
 
-export interface Package {
-  id: string;
-  weight: number;
-  distance: number;
-  deliveryCost: number;
-  discount: number;
-  totalCost: number;
-  offer?: Offer;
-  offerCode?: string;
-  vehicle?: Vehicle;
-  deliveryTime?: number;
-  arrivalTime?: number;
-  setVehicle(vehicle: Vehicle): Package;
-  setDeliveryTime(time: number): Package;
-  setArrivalTime(time: number): Package;
-}
-
 export type PackageProps = {
   id: string;
   weight: number;
@@ -31,7 +14,18 @@ export type PackagesProps = {
   baseCost: number;
 };
 
-export class Package implements Package {
+export class Package {
+  id: string;
+  weight: number;
+  distance: number;
+  offerCode: string | undefined;
+  totalCost: number = 0;
+  deliveryCost: number = 0;
+  discount: number = 0;
+  offer: Offer | undefined;
+  vehicle: Vehicle | undefined;
+  deliveryTime: number = 0;
+  arrivalTime: number = 0;
   #baseCost: number = 0;
 
   constructor(props: PackageProps) {

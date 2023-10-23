@@ -253,7 +253,7 @@ describe('sortPackages()', () => {
         weight: 50,
         distance: 100,
       },
-    ];
+    ].map(expect.objectContaining);
 
     const sortedPackages = sortPackages(packages);
 

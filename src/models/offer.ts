@@ -5,13 +5,6 @@ type Range = {
   max: number;
 };
 
-export interface Offer {
-  id: string;
-  percent: number;
-  distance: Range;
-  weight: Range;
-}
-
 export type OfferProps = {
   id: string;
   percent: number;
@@ -19,7 +12,12 @@ export type OfferProps = {
   weight: Range;
 };
 
-export class Offer implements Offer {
+export class Offer {
+  id: string;
+  percent: number = 0;
+  distance: Range;
+  weight: Range;
+
   constructor(props: OfferProps) {
     this.id = props.id;
     this.percent = props.percent;

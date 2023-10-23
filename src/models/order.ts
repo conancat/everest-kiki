@@ -3,26 +3,20 @@ import { Package, PackageProps, createPackage } from './package';
 import Shipment from './shipment';
 import { Vehicle } from './vehicle';
 
-export interface Order {
-  baseCost: number;
-  packages: Package[];
-  shipments: Shipment[];
-  totalWeight: number;
-  totalDistance: number;
-  totalDiscount: number;
-  totalDeliveryCost: number;
-  finalCost: number;
-  plan(vehicles: Vehicle[]): Order;
-  calculate(): Order;
-}
-
 export type OrderProps = {
   packages: PackageProps[];
   baseCost: number;
 };
 
-export class Order implements Order {
+export class Order {
   shipments: Shipment[] = [];
+  baseCost: number = 0;
+  totalDeliveryCost: number = 0;
+  totalWeight: number = 0;
+  totalDiscount: number = 0;
+  totalDistance: number = 0;
+  finalCost: number = 0;
+  packages: Package[] = [];
 
   constructor(props: OrderProps) {
     this.baseCost = props.baseCost;
@@ -30,7 +24,7 @@ export class Order implements Order {
       createPackage({ ...pkg, baseCost: props.baseCost })
     );
   }
-  plan(vehicles: Vehicle[]): Order {
+  plan(vehicles: Vehicle[]): this {
     let remainingPackages = this.packages;
 
     while (remainingPackages.length > 0) {
@@ -49,13 +43,10 @@ export class Order implements Order {
   private sumPackagesByAttribute(
     attribute: 'weight' | 'distance' | 'deliveryCost' | 'discount'
   ): number {
-    return this.packages.reduce(
-      (total, pkg) => total + (pkg[attribute] as number),
-      0
-    );
+    return this.packages.reduce((total, pkg) => total + pkg[attribute], 0);
   }
 
-  calculate(): Order {
+  calculate(): this {
     this.packages.forEach((pkg) => pkg.calculate());
 
     this.totalWeight = this.sumPackagesByAttribute('weight');

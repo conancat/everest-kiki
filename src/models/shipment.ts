@@ -24,17 +24,13 @@ type ShipmentPlan = {
   remainingPackages: Package[];
 };
 
-export interface Shipment {
-  packages: Package[];
+export class Shipment {
+  packages: Package[] = [];
+  totalWeight: number = 0;
+  totalCost: number = 0;
+  totalDistance: number = 0;
   vehicle: Vehicle;
-  totalWeight: number;
-  totalDistance: number;
-  totalCost: number;
-  simulate(packages: Package[], vehicle: Vehicle): ShipmentScenarios;
-  plan(packages: Package[]): ShipmentPlan;
-}
 
-export class Shipment implements Shipment {
   constructor(props: ShipmentProps) {
     this.packages = props.packages;
     this.totalWeight = props.totalWeight;

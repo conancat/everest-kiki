@@ -1,27 +1,18 @@
 import { Package } from './package';
 
-export interface Vehicle {
-  id: string;
-  maxSpeed: number;
-  maxWeight: number;
-  totalTravelTime: number;
-  packages: Package[];
-  deliveries: Package[][];
-  calculateDeliveryTime(pkg: Package): number;
-  calculateArrivalTime(pkgs: Package): number;
-  deliverPackages(pkgs: Package[]): Vehicle;
-}
-
 export type VehicleProps = {
   id: string;
   maxSpeed: number;
   maxWeight: number;
 };
 
-export class Vehicle implements Vehicle {
+export class Vehicle {
+  id: string;
+  maxSpeed: number = 0;
+  maxWeight: number = 0;
+  totalTravelTime: number = 0;
   packages: Package[] = [];
   deliveries: Package[][] = [];
-  totalTravelTime: number = 0;
 
   constructor(props: VehicleProps) {
     this.id = props.id;
@@ -51,7 +42,7 @@ export class Vehicle implements Vehicle {
     );
 
     const maxDeliveryTime = deliveryPackages
-      .map((pkg) => pkg.deliveryTime as number)
+      .map((pkg) => pkg.deliveryTime)
       .sort((a, b) => b - a)[0];
 
     this.packages = this.packages.concat(deliveryPackages);
