@@ -3,7 +3,8 @@ import { Package, PackageProps, createPackage } from './package';
 import Shipment from './shipment';
 import { Vehicle } from './vehicle';
 
-interface Order {
+export interface Order {
+  baseCost: number;
   packages: Package[];
   shipments: Shipment[];
   totalWeight: number;
@@ -15,15 +16,16 @@ interface Order {
   calculate(): Order;
 }
 
-type OrderProps = {
+export type OrderProps = {
   packages: PackageProps[];
   baseCost: number;
 };
 
-class Order implements Order {
+export class Order implements Order {
   shipments: Shipment[] = [];
 
   constructor(props: OrderProps) {
+    this.baseCost = props.baseCost;
     this.packages = props.packages.map((pkg) =>
       createPackage({ ...pkg, baseCost: props.baseCost })
     );
@@ -65,3 +67,5 @@ class Order implements Order {
 }
 
 export const createOrder = (props: OrderProps): Order => new Order(props);
+
+export default Order;

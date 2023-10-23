@@ -19,6 +19,7 @@ import {
   parseVehiclesMaxSpeedInput,
   parseVehiclesMaxWeightInput,
 } from './parse';
+import { PackageProps } from '../models/package';
 
 type PromptOptions = {
   baseCost?: number;
@@ -33,6 +34,24 @@ type PromptOneOptions = {
   message: string;
   validate: (input: string) => boolean | string;
   parse: (input: string) => any;
+};
+
+export type Options = {
+  order: {
+    baseCost: number;
+    packagesCount: number;
+  };
+  packages: PackageProps[];
+  vehicles: {
+    vehiclesCount: number;
+    vehiclesMaxSpeed: number;
+    vehiclesMaxWeight: number;
+  };
+};
+
+export type PromptResult = {
+  confirm: boolean;
+  options: Options;
 };
 
 const askFor = async (options: PromptOneOptions) => {
@@ -60,7 +79,9 @@ const promptPackagesInput = async (count: number) => {
   return packages;
 };
 
-export const prompt = async (promptOptions: PromptOptions = {}) => {
+export const prompt = async (
+  promptOptions: PromptOptions = {}
+): Promise<PromptResult> => {
   const order = {
     baseCost:
       promptOptions.baseCost ||

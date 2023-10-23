@@ -1,4 +1,4 @@
-import { prompt } from './prompt';
+import { Options, prompt } from './prompt';
 
 import { program } from 'commander';
 import { ProgramInputSchema } from './schemas';
@@ -6,8 +6,12 @@ import { formatZodError } from '../utils';
 import { createVehicle } from '../models/vehicle';
 import { createOrder } from '../models/order';
 
-import Table from 'cli-table3';
-import Shipment from '../models/shipment';
+import {
+  printOrder,
+  printProgramOptions,
+  printProgramValidationError,
+  printShipments,
+} from './print';
 
 program
   .option('-b, --base-cost <number>', 'Base cost')
@@ -15,6 +19,35 @@ program
   .option('-c, --vehicles-count <number>', 'Vehicles count')
   .option('-s, --vehicles-max-speed <number>', 'Vehicles max speed')
   .option('-w, --vehicles-max-weight <number>', 'Vehicles max weight');
+
+export type ProgramOptions = {
+  baseCost?: number;
+  packagesCount?: number;
+  vehiclesCount?: number;
+  vehiclesMaxSpeed?: number;
+  vehiclesMaxWeight?: number;
+};
+
+const buildOrder = (options: Options) => {
+  const vehicles = Array(options.vehicles.vehiclesCount)
+    .fill(0)
+    .map((_, i) =>
+      createVehicle({
+        id: `Vehicle ${i + 1}`,
+        maxSpeed: options.vehicles.vehiclesMaxSpeed,
+        maxWeight: options.vehicles.vehiclesMaxWeight,
+      })
+    );
+
+  const order = createOrder({
+    packages: options.packages,
+    baseCost: options.order.baseCost,
+  });
+
+  order.calculate().plan(vehicles);
+
+  return order;
+};
 
 async function main() {
   program.parse();
@@ -24,22 +57,12 @@ async function main() {
   const result = ProgramInputSchema.safeParse(program.opts());
 
   if (!result.success) {
-    const errorMsg = formatZodError(result.error)
-      .split(' | ')
-      .map((str: string) => '  * ' + str)
-      .join('\n');
-
-    console.log('Error parsing program options:');
-    console.log(errorMsg);
+    printProgramValidationError(result.error);
     process.exit(1);
   }
 
   if (result.data) {
-    console.log('\n🧹 You have provided the following options 👀:');
-
-    Object.entries(result.data).forEach(([key, value]) => {
-      console.log(`  * ${key}: ${value}`);
-    });
+    printProgramOptions(result.data as ProgramOptions);
   }
 
   console.log('\n🧹 Please tell us more about your order\n');
@@ -47,129 +70,16 @@ async function main() {
   const { options, confirm } = await prompt(result.data);
 
   if (!confirm) {
+    console.log("\n🧹 Okay, let's start over!\n");
     return main();
   }
 
-  const vehicles = Array(options.vehicles.vehiclesCount)
-    .fill(0)
-    .map((_, i) =>
-      createVehicle({
-        id: `Vehicle ${i + 1}`,
-        maxSpeed: 70,
-        maxWeight: 200,
-      })
-    );
+  const order = buildOrder(options);
 
-  const order = createOrder({
-    packages: options.packages,
-    baseCost: 100,
-  });
-
-  order.calculate().plan(vehicles);
   console.log("\n\n\nOkay! Here's the delivery plan for your order 📦\n");
 
-  const orderTable = new Table({
-    head: [
-      'Base Cost',
-      'Packages Count',
-      'Weight',
-      'Distance',
-      'Delivery Cost',
-      'Discount',
-      'Total Cost',
-    ],
-  });
-
-  orderTable.push([
-    options.order.baseCost,
-    order.packages.length,
-    order.totalWeight,
-    order.totalDistance,
-    order.totalDeliveryCost,
-    order.totalDiscount,
-    order.finalCost,
-  ]);
-
-  const orderPackagesTable = new Table({
-    head: [
-      'ID',
-      'Weight',
-      'Distance',
-      'Delivery Time',
-      'Arrival Time',
-      'Delivery Cost',
-      'Discount',
-      'Total Cost',
-    ],
-  });
-
-  order.packages.forEach((pkg) => {
-    orderPackagesTable.push([
-      pkg.id,
-      pkg.weight,
-      pkg.distance,
-      pkg.deliveryTime,
-      pkg.arrivalTime,
-      pkg.deliveryCost,
-      pkg.discount,
-      pkg.totalCost,
-    ]);
-  });
-
-  console.log('\n🧾 Order Details');
-  console.log(orderTable.toString());
-  console.log('\n📦 Packages List');
-  console.log(orderPackagesTable.toString());
-
-  order.shipments.forEach((shipment, i) => {
-    const shipmentTable = new Table({
-      head: [
-        'Vehicle',
-        'Packages Count',
-        'Total Distance',
-        'Total Weight',
-        'Total Cost',
-      ],
-    });
-
-    shipmentTable.push([
-      shipment.vehicle.id,
-      shipment.packages.length,
-      shipment.totalDistance,
-      shipment.totalWeight,
-      shipment.totalCost,
-    ]);
-
-    const shipmentPackagesTable = new Table({
-      head: [
-        'ID',
-        'Weight',
-        'Distance',
-        'Delivery Time',
-        'Arrival Time',
-        'Delivery Cost',
-        'Discount',
-        'Total Cost',
-      ],
-    });
-
-    shipment.packages.forEach((pkg) => {
-      shipmentPackagesTable.push([
-        pkg.id,
-        pkg.weight,
-        pkg.distance,
-        pkg.deliveryTime,
-        pkg.arrivalTime,
-        pkg.deliveryCost,
-        pkg.discount,
-        pkg.totalCost,
-      ]);
-    });
-
-    console.log(`\n🛵 Shipment ${i + 1}`);
-    console.log(shipmentTable.toString());
-    console.log(shipmentPackagesTable.toString());
-  });
+  printOrder(order);
+  printShipments(order);
 
   console.log('\n\n🧹Thank you for using Kiki Delivery Service!🧹');
 }
