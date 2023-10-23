@@ -58,8 +58,8 @@ export const buildOrderPackagesTable = (order: Order) => {
   return orderPackagesTable;
 };
 
-export const buildShipmentTable = (shipment: Shipment) =>
-  new Table({
+export const buildShipmentTable = (shipment: Shipment) => {
+  const shipmentTable = new Table({
     head: [
       'Vehicle',
       'Packages Count',
@@ -67,13 +67,18 @@ export const buildShipmentTable = (shipment: Shipment) =>
       'Total Weight',
       'Total Cost',
     ],
-  }).push([
+  });
+
+  shipmentTable.push([
     shipment.vehicle.id,
     shipment.packages.length,
     shipment.totalDistance,
     shipment.totalWeight,
     shipment.totalCost,
   ]);
+
+  return shipmentTable;
+};
 
 export const buildShipmentPackagesTable = (shipment: Shipment) => {
   const shipmentPackagesTable = new Table({

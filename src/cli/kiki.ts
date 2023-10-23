@@ -22,11 +22,16 @@ export type ProgramOptions = {
 };
 
 program
-  .option('-b, --base-cost <number>', 'Base cost')
-  .option('-p, --packages-count <number>', 'Packages count')
-  .option('-c, --vehicles-count <number>', 'Vehicles count')
-  .option('-s, --vehicles-max-speed <number>', 'Vehicles max speed')
-  .option('-w, --vehicles-max-weight <number>', 'Vehicles max weight');
+  .version('1.0.0')
+  .description(
+    'Everest Engineering - Kiki Delivery Service. Create an order and retrieve a delivery plan.'
+  )
+  .usage('[options]')
+  .option('-b, --base-cost <number>', 'Base cost for the order')
+  .option('-p, --packages-count <number>', 'Number of packages for the order')
+  .option('-c, --vehicles-count <number>', 'Number of vehicles')
+  .option('-s, --vehicles-max-speed <number>', 'Max speed of the vehicles')
+  .option('-w, --vehicles-max-weight <number>', 'Max weight of the vehicles');
 
 const buildOrder = (options: Options) => {
   const vehicles = Array(options.vehicles.vehiclesCount)

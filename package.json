@@ -2,10 +2,10 @@
   "name": "everest-kiki",
   "version": "1.0.0",
   "description": "To install dependencies:",
-  "main": "index.js",
+  "main": "./kiki.js",
   "scripts": {
-    "start": "ts-node src/cli/index.ts",
-    "build": "esbuild src/cli/index.ts --bundle --platform=node --minify --outfile=index.js",
+    "start": "ts-node src/cli/kiki.ts",
+    "build": "esbuild src/cli/kiki.ts --banner:js='#!/usr/bin/env node' --bundle --platform=node --minify --outfile=kiki.js",
     "test": "jest"
   },
   "author": "",
@@ -28,5 +28,8 @@
     "cli-table3": "^0.6.3",
     "commander": "^11.1.0",
     "zod": "^3.22.4"
+  },
+  "bin": {
+    "kiki": "./kiki.js"
   }
 }

@@ -9,7 +9,7 @@ import {
 } from './tables';
 import { ZodError } from 'zod';
 import { formatZodError } from '../utils';
-import { ProgramOptions } from '.';
+import { ProgramOptions } from './kiki';
 
 export const printOrder = (order: Order) => {
   const orderTable = buildOrderTable(order);
@@ -48,6 +48,10 @@ export const printProgramValidationError = (error: ZodError) => {
 };
 
 export const printProgramOptions = (options: ProgramOptions) => {
+  if (!Object.keys(options).length) {
+    return;
+  }
+
   console.log('\n🧹 You have provided the following options 👀:');
 
   Object.entries(options).forEach(([key, value]) => {
