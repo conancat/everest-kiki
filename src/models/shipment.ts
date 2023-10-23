@@ -71,8 +71,8 @@ export class Shipment implements Shipment {
         if (remainingWeight - pkg.weight >= 0) {
           scenario.packages.push(pkg);
           scenario.totalWeight += pkg.weight;
-          scenario.totalCost += pkg.totalCost;
-          scenario.totalDistance += pkg.distance;
+          scenario.totalCost += pkg.totalCost ?? 0;
+          scenario.totalDistance += pkg.distance ?? 0;
           remainingWeight -= pkg.weight;
         }
       }
@@ -107,14 +107,20 @@ export class Shipment implements Shipment {
   }
 
   static plan(packages: Package[], vehicle: Vehicle): ShipmentPlan {
-    const scenarios = Shipment.simulate(packages, vehicle);
+    const scenarios = Shipment.simulate(structuredClone(packages), vehicle);
 
     const bestScenario = Shipment.findBestScenario(scenarios);
 
     const plan = {
-      shipment: new Shipment({ ...bestScenario, vehicle }),
+      shipment: new Shipment({
+        ...bestScenario,
+        packages: packages.filter((pkg) =>
+          bestScenario.packages.map((p) => p.id).includes(pkg.id)
+        ),
+        vehicle,
+      }),
       remainingPackages: packages.filter(
-        (pkg) => !scenarios[0].packages.map((p) => p.id).includes(pkg.id)
+        (pkg) => !bestScenario.packages.map((p) => p.id).includes(pkg.id)
       ),
     };
 

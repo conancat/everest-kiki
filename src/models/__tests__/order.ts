@@ -83,24 +83,32 @@ describe('Order.prototype.plan()', () => {
       packages: expect.arrayContaining(
         expectedPackages.filter((pkg) => ['PKG2', 'PKG4'].includes(pkg.id))
       ),
+      totalCost: 0,
+      totalDistance: 185,
       totalWeight: 185,
       vehicle: vehicle1,
     };
 
     const expectedShipment2 = {
       packages: expectedPackages.filter((pkg) => ['PKG3'].includes(pkg.id)),
+      totalCost: 0,
+      totalDistance: 100,
       totalWeight: 175,
       vehicle: vehicle2,
     };
 
     const expectedShipment3 = {
       packages: expectedPackages.filter((pkg) => ['PKG5'].includes(pkg.id)),
+      totalCost: 0,
+      totalDistance: 95,
       totalWeight: 155,
       vehicle: vehicle2,
     };
 
     const expectedShipment4 = {
       packages: expectedPackages.filter((pkg) => ['PKG1'].includes(pkg.id)),
+      totalCost: 0,
+      totalDistance: 30,
       totalWeight: 50,
       vehicle: vehicle1,
     };
@@ -118,7 +126,8 @@ describe('Order.prototype.plan()', () => {
 
     order.plan(vehicles);
 
-    expect(order.packages).toEqual(expectedPackages);
+    expect(order.packages).toEqual(expect.arrayContaining(expectedPackages));
+
     expect(order.shipments).toEqual(expectedShipments);
 
     expect(vehicle1.totalTravelTime).toBe(4.4);

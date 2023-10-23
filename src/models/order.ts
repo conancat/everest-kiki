@@ -37,7 +37,9 @@ export class Order implements Order {
       const vehicle = getNextAvailableVehicle(vehicles);
       const plan = Shipment.plan(remainingPackages, vehicle);
       plan.shipment.commit();
+
       remainingPackages = plan.remainingPackages;
+
       this.shipments.push(plan.shipment);
     }
 

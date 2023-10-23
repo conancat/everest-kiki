@@ -25,6 +25,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 175,
+        totalDistance: 100,
+        totalCost: 0,
       },
       {
         packages: [
@@ -35,6 +37,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 155,
+        totalDistance: 95,
+        totalCost: 0,
       },
       {
         packages: [
@@ -52,6 +56,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 185,
+        totalDistance: 185,
+        totalCost: 0,
       },
       {
         packages: [
@@ -69,6 +75,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 125,
+        totalDistance: 155,
+        totalCost: 0,
       },
       {
         packages: [
@@ -80,6 +88,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 50,
+        totalDistance: 30,
+        totalCost: 0,
       },
     ]);
   });
@@ -108,6 +118,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 175,
+        totalDistance: 100,
+        totalCost: 0,
       },
       {
         packages: [
@@ -118,6 +130,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 155,
+        totalDistance: 95,
+        totalCost: 0,
       },
       {
         packages: [
@@ -129,6 +143,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 50,
+        totalDistance: 30,
+        totalCost: 0,
       },
     ]);
   });
@@ -156,6 +172,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 155,
+        totalDistance: 95,
+        totalCost: 0,
       },
       {
         packages: [
@@ -167,6 +185,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 50,
+        totalDistance: 30,
+        totalCost: 0,
       },
     ]);
   });
@@ -195,6 +215,8 @@ describe('Shipment.simulate()', () => {
           },
         ],
         totalWeight: 50,
+        totalDistance: 30,
+        totalCost: 0,
       },
     ]);
   });
@@ -214,19 +236,21 @@ describe('Shipment.plan()', () => {
       shipment: {
         packages: [
           {
-            id: 'PKG4',
-            weight: 110,
-            distance: 60,
-            offerCode: 'OFR002',
-          },
-          {
             id: 'PKG2',
             weight: 75,
             distance: 125,
             offerCode: 'OFR008',
           },
+          {
+            id: 'PKG4',
+            weight: 110,
+            distance: 60,
+            offerCode: 'OFR002',
+          },
         ],
         totalWeight: 185,
+        totalCost: 0,
+        totalDistance: 185,
         vehicle: {
           packages: [],
           deliveries: [],
@@ -282,6 +306,8 @@ describe('Shipment.plan()', () => {
           },
         ],
         totalWeight: 175,
+        totalCost: 0,
+        totalDistance: 100,
         vehicle: {
           packages: [],
           deliveries: [],
@@ -330,6 +356,8 @@ describe('Shipment.plan()', () => {
           },
         ],
         totalWeight: 155,
+        totalCost: 0,
+        totalDistance: 95,
         vehicle: {
           packages: [],
           deliveries: [],
@@ -374,6 +402,8 @@ describe('Shipment.plan()', () => {
           },
         ],
         totalWeight: 50,
+        totalCost: 0,
+        totalDistance: 30,
         vehicle: {
           packages: [],
           deliveries: [],
@@ -399,20 +429,20 @@ describe('Shipment.prototype.commit()', () => {
 
     const expectedPackages = [
       {
-        id: 'PKG4',
-        weight: 110,
-        distance: 60,
-        offerCode: 'OFR002',
-        deliveryTime: 1.2,
-        arrivalTime: 1.2,
-      },
-      {
         id: 'PKG2',
         weight: 75,
         distance: 125,
         offerCode: 'OFR008',
         deliveryTime: 2.5,
         arrivalTime: 2.5,
+      },
+      {
+        id: 'PKG4',
+        weight: 110,
+        distance: 60,
+        offerCode: 'OFR002',
+        deliveryTime: 1.2,
+        arrivalTime: 1.2,
       },
     ];
 
