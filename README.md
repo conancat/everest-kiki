@@ -112,6 +112,7 @@ You can also install this project as a global CLI tool using the following comma
 
 ```bash
 npm link
+
 kiki -h
 
 Usage: kiki [options]
@@ -127,6 +128,118 @@ Options:
   -h, --help                          display help for command
 ```
 
+You can run the command with the supported options to save time when creating an order. If you supply all options via the CLI, you will not be prompted to enter the order details, and instead you proceed to enter details for each package directly.
+
+For example, you can run: 
+
+```bash
+# Specify which option you want as part of the command. All options are optional.
+kiki --base-cost 100 --packages-count 5 --vehicles-count 2 --vehicles-max-speed 70 --vehicles-max-weight 200
+
+# Or you can use the short version instead
+kiki -b 100 -p 5 -c 2 -s 70 -w 200
+
+# You should see the following output:
+
+🧹 Welcome to Kiki Delivery Service! 🧹
+
+🧹 You have provided the following options 👀:
+  * baseCost: 100
+  * packagesCount: 5
+  * vehiclesCount: 2
+  * vehiclesMaxSpeed: 70
+  * vehiclesMaxWeight: 200
+
+🧹 Please tell us more about your order
+
+? 📦 Enter package 1 details [<id> <weight> <distance> [offerCode]]:
+```
+
+## Running tests
+
+This project uses Jest for testing. You can run the tests using the following command:
+
+```bash
+
+npm test
+
+# Or
+
+bun run test
+
+```
+
+## Class diagram
+
+```mermaid
+classDiagram
+  Order o-- Shipment
+  Order o-- Package
+  Shipment o-- Package
+  Shipment <-- Vehicle
+  Package <-- Offer
+
+  class Order {
+    +Package[] packages
+    +Shipment[] shipments
+    +plan()
+  } 
+
+  class Shipment {
+    +Package[] packages
+    +number totalWeight
+    +number totalCost
+    +number totalDistance
+    +Vehicle vehicle
+    +commit()
+    +simulate()$
+    +plan()$
+  }
+
+  class Package {
+    +string id
+    +number weight
+    +number distance
+    +string offerCode
+    +Offer offer
+    +calculate()
+    +calculateDeliveryCost()
+    +calculateDiscount()
+    +setDeliveryTime()
+    +setArrivalTime()
+  }
+
+  class Vehicle {
+    +string id
+    +number maxSpeed
+    +number maxWeight
+    +number totalTravelTime
+    +calculateDeliveryTime()
+    +calculateArrivalTime()
+    +deliverPackages()
+  }
+
+  class Offer {
+    +string id
+    +number percent
+    +Range distance
+    +Range weight
+    +test()
+    +calculate()
+  }
+
+
+
+```
+
+## Packages
+
+This project uses the following packages:
+
+- [commander](https://www.npmjs.com/package/commander) - For creating the CLI
+- [inquirer](https://www.npmjs.com/package/inquirer) - For prompting the user for input
+- [zod](https://www.npmjs.com/package/zod) - For validating the input
+- [cli-table3](https://www.npmjs.com/package/cli-table3) - For rendering tables in the CLI
 
 ## License
 

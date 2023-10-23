@@ -67,10 +67,6 @@ export class Package {
     return this.discount;
   }
 
-  setVehicle(vehicle: Vehicle): this {
-    this.vehicle = vehicle;
-    return this;
-  }
   setDeliveryTime(time: number): this {
     this.deliveryTime = time;
     return this;
