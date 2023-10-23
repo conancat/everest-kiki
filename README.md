@@ -1,8 +1,8 @@
 # Everest Engineering - Kiki Delivery Service
 
-![Kiki Delivery Service](./docs/kiki.jpg)
+![Kiki's Delivery Service](./docs/kiki.jpg)
 
-Welcome to Kiki Delivery Service! This project is created as part of Everest Engineering's interview process. This is a simple CLI application that allows you to create a delivery order, and outputs the costs of the order, the delivery time as well as the shipment plan.
+Welcome to Kiki's Delivery Service! This project is created as part of Everest Engineering's interview process. This is a simple CLI application that allows you to create a delivery order, and outputs the costs of the order, the delivery time as well as the shipment plan.
 
 ## Getting Started
 
@@ -50,7 +50,7 @@ Note that you can also run the application with the order details as command lin
 ```
 ➜ kiki
 
-🧹 Welcome to Kiki Delivery Service! 🧹
+🧹 Welcome to Kiki's Delivery Service! 🧹
 
 🧹 Please tell us more about your order
 

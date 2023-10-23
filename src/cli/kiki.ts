@@ -24,7 +24,7 @@ export type ProgramOptions = {
 program
   .version('1.0.0')
   .description(
-    'Everest Engineering - Kiki Delivery Service. Create an order and retrieve a delivery plan.'
+    "Everest Engineering - Kiki's Delivery Service. Create an order and retrieve a delivery plan."
   )
   .usage('[options]')
   .option('-b, --base-cost <number>', 'Base cost for the order')
@@ -57,7 +57,7 @@ const buildOrder = (options: Options) => {
 async function main() {
   program.parse();
 
-  console.log('🧹 Welcome to Kiki Delivery Service! 🧹');
+  console.log("🧹 Welcome to Kiki's Delivery Service! 🧹");
 
   const result = ProgramInputSchema.safeParse(program.opts());
 
@@ -86,7 +86,7 @@ async function main() {
   printOrder(order);
   printShipments(order);
 
-  console.log('\n\n🧹Thank you for using Kiki Delivery Service!🧹');
+  console.log("\n\n🧹Thank you for using Kiki's Delivery Service!🧹");
 }
 
 main();
