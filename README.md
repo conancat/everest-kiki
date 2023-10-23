@@ -69,8 +69,21 @@ You will then be given a summary of your order details. If you wish to make chan
 After this, you will be shown a report of your order. This includes the total cost of the order, the delivery time as well as the shipment plan.
 
 
-### Screenshots
+## Screenshots
 
+### Taking an order
+![Screenshot 1 - Taking an order](./docs/kiki-screenshot-1.png)
+
+
+### Order confirmation
+![Screenshot 2 - Order confirmation](./docs/kiki-screenshot-2.png)
+
+### Order summary
+![Screenshot 3 - Order summary](./docs/kiki-screenshot-3.png)
+
+### Shipment plan
+![Screenshot 4 - Shipment plan 1](./docs/kiki-screenshot-4.png)
+![Screenshot 5 - Shipment plan 2](./docs/kiki-screenshot-5.png)
 
 
 
@@ -113,3 +126,8 @@ Options:
   -w, --vehicles-max-weight <number>  Vehicles max weight
   -h, --help                          display help for command
 ```
+
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for more details.
