@@ -1,10 +1,8 @@
-# Everest - Kiki Delivery Service
+# Everest Engineering - Kiki Delivery Service
 
 ![Kiki Delivery Service](./docs/kiki.jpg)
 
 Welcome to Kiki Delivery Service! This project is created as part of Everest Engineering's interview process. This is a simple CLI application that allows you to create a delivery order, and outputs the costs of the order, the delivery time as well as the shipment plan.
-
-
 
 ## Getting Started
 
