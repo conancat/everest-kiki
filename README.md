@@ -42,7 +42,11 @@ bun start
 
 ## Using the CLI
 
-This project is a CLI application. After you start the application, you will be prompted to enter the order details. You can enter the following details:
+This project is a CLI application. After you start the application, you will be prompted to enter the order details.  
+
+The `id`, `weight` and `distance` arguments are required for each Package. The `offerCode` argument is optional.
+
+Note that you can also run the application with the order details as command line arguments. See [Installing as a global CLI tool](#installing-as-a-global-cli-tool) for more details.
 
 
 ```
