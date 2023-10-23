@@ -94,7 +94,7 @@ You can build this project to a single file using the following command:
 ```bash
 npm run build 
 
-// or 
+# or
 
 bun build
 ```
@@ -103,6 +103,11 @@ This will create a single file `kiki.js` in the project folder. You can then run
 
 ```bash
 node kiki.js
+
+# or just run the file directly
+
+./kiki.js
+
 ```
 
 ## Installing as a global CLI tool
