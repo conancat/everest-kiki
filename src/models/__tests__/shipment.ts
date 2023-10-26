@@ -18,43 +18,28 @@ describe('Shipment.simulate()', () => {
       {
         packages: [
           {
-            id: 'PKG3',
-            weight: 175,
-            distance: 100,
-            offerCode: 'OFR003',
-          },
-        ].map(expect.objectContaining),
-        totalWeight: 175,
-        totalDistance: 100,
-        totalCost: 0,
-      },
-      {
-        packages: [
-          {
-            id: 'PKG5',
-            weight: 155,
-            distance: 95,
-          },
-        ].map(expect.objectContaining),
-        totalWeight: 155,
-        totalDistance: 95,
-        totalCost: 0,
-      },
-      {
-        packages: [
-          {
             id: 'PKG4',
             weight: 110,
             distance: 60,
             offerCode: 'OFR002',
+            totalCost: 0,
+            deliveryCost: 0,
+            discount: 0,
+            deliveryTime: 0,
+            arrivalTime: 0,
           },
           {
             id: 'PKG2',
             weight: 75,
             distance: 125,
             offerCode: 'OFR008',
+            totalCost: 0,
+            deliveryCost: 0,
+            discount: 0,
+            deliveryTime: 0,
+            arrivalTime: 0,
           },
-        ].map(expect.objectContaining),
+        ],
         totalWeight: 185,
         totalDistance: 185,
         totalCost: 0,
@@ -66,14 +51,24 @@ describe('Shipment.simulate()', () => {
             weight: 75,
             distance: 125,
             offerCode: 'OFR008',
+            totalCost: 0,
+            deliveryCost: 0,
+            discount: 0,
+            deliveryTime: 0,
+            arrivalTime: 0,
           },
           {
             id: 'PKG1',
             weight: 50,
             distance: 30,
             offerCode: 'OFR001',
+            totalCost: 0,
+            deliveryCost: 0,
+            discount: 0,
+            deliveryTime: 0,
+            arrivalTime: 0,
           },
-        ].map(expect.objectContaining),
+        ],
         totalWeight: 125,
         totalDistance: 155,
         totalCost: 0,
@@ -81,14 +76,36 @@ describe('Shipment.simulate()', () => {
       {
         packages: [
           {
-            id: 'PKG1',
-            weight: 50,
-            distance: 30,
-            offerCode: 'OFR001',
+            id: 'PKG5',
+            weight: 155,
+            distance: 95,
+            totalCost: 0,
+            deliveryCost: 0,
+            discount: 0,
+            deliveryTime: 0,
+            arrivalTime: 0,
           },
-        ].map(expect.objectContaining),
-        totalWeight: 50,
-        totalDistance: 30,
+        ],
+        totalWeight: 155,
+        totalDistance: 95,
+        totalCost: 0,
+      },
+      {
+        packages: [
+          {
+            id: 'PKG3',
+            weight: 175,
+            distance: 100,
+            offerCode: 'OFR003',
+            totalCost: 0,
+            deliveryCost: 0,
+            discount: 0,
+            deliveryTime: 0,
+            arrivalTime: 0,
+          },
+        ],
+        totalWeight: 175,
+        totalDistance: 100,
         totalCost: 0,
       },
     ]);
@@ -414,6 +431,124 @@ describe('Shipment.plan()', () => {
         },
       },
       remainingPackages: [],
+    });
+  });
+
+  it('should get best scenario based on total number of packages if multiple scenarios are of the same weight', () => {
+    const packages = [
+      {
+        id: 'P1',
+        weight: 50,
+        distance: 100,
+        offerCode: 'OFR002',
+      },
+      {
+        id: 'P2',
+        weight: 50,
+        distance: 100,
+        offerCode: 'OFR001',
+      },
+      {
+        id: 'P3',
+        weight: 150,
+        distance: 100,
+        offerCode: 'OFR003',
+      },
+      {
+        id: 'P4',
+        weight: 99,
+        distance: 100,
+        offerCode: 'OFR001',
+      },
+      {
+        id: 'P5',
+        weight: 100,
+        distance: 100,
+        offerCode: 'OFR001',
+      },
+    ].map(createPackage);
+
+    const vehicle: Vehicle = createVehicle({
+      id: 'VEHICLE_1',
+      maxSpeed: 70,
+      maxWeight: 200,
+    });
+
+    const plan = Shipment.plan(packages, vehicle);
+
+    expect(plan).toEqual({
+      shipment: {
+        packages: [
+          {
+            id: 'P1',
+            weight: 50,
+            distance: 100,
+            offerCode: 'OFR002',
+            totalCost: 0,
+            deliveryCost: 0,
+            discount: 0,
+            deliveryTime: 0,
+            arrivalTime: 0,
+          },
+          {
+            id: 'P2',
+            weight: 50,
+            distance: 100,
+            offerCode: 'OFR001',
+            totalCost: 0,
+            deliveryCost: 0,
+            discount: 0,
+            deliveryTime: 0,
+            arrivalTime: 0,
+          },
+          {
+            id: 'P5',
+            weight: 100,
+            distance: 100,
+            offerCode: 'OFR001',
+            totalCost: 0,
+            deliveryCost: 0,
+            discount: 0,
+            deliveryTime: 0,
+            arrivalTime: 0,
+          },
+        ],
+        totalWeight: 200,
+        totalCost: 0,
+        totalDistance: 300,
+        vehicle: {
+          id: 'VEHICLE_1',
+          maxSpeed: 70,
+          maxWeight: 200,
+          totalTravelTime: 0,
+          packages: [],
+          deliveries: [],
+        },
+      },
+      remainingPackages: [
+        {
+          id: 'P3',
+          weight: 150,
+          distance: 100,
+          offerCode: 'OFR003',
+          totalCost: 0,
+          deliveryCost: 0,
+          discount: 0,
+          deliveryTime: 0,
+          arrivalTime: 0,
+        },
+        {
+          id: 'P4',
+          weight: 99,
+          distance: 100,
+          offerCode: 'OFR001',
+          totalCost: 0,
+          deliveryCost: 0,
+          discount: 0,
+          deliveryTime: 0,
+          arrivalTime: 0,
+        },
+      ],
     });
   });
 });

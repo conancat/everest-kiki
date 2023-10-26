@@ -47,7 +47,18 @@ export class Shipment {
   static simulate(packages: Package[], vehicle: Vehicle) {
     const scenarios: ShipmentScenarios = [];
 
-    const simulate = (vehicle: Vehicle, packages: Package[]) => {
+    const checkScenarioExists = (scenario: ShipmentScenario) => {
+      const scenarioIds = scenario.packages.map((p) => p.id).sort();
+
+      // Check if any scenario in scenarios array is the same as the current scenario
+      return scenarios.some((s) => {
+        const sIds = s.packages.map((p) => p.id).sort();
+        // check if scenarioIds and sIds are the same
+        return scenarioIds.every((id, i) => id === sIds[i]);
+      });
+    };
+
+    const simulate = (packages: Package[]) => {
       if (packages.length === 0) {
         return scenarios;
       }
@@ -63,26 +74,41 @@ export class Shipment {
 
       let remainingWeight = vehicle.maxWeight;
 
-      for (const pkg of sortedPackages) {
+      for (let i = 0; i < sortedPackages.length; i++) {
+        const pkg = sortedPackages[i];
+
         if (remainingWeight - pkg.weight >= 0) {
           scenario.packages.push(pkg);
           scenario.totalWeight += pkg.weight;
           scenario.totalCost += pkg.totalCost ?? 0;
           scenario.totalDistance += pkg.distance ?? 0;
           remainingWeight -= pkg.weight;
+
+          const updatedPackages = structuredClone(sortedPackages);
+          updatedPackages.splice(i, 1);
+
+          if (updatedPackages.length > 2) {
+            simulate(updatedPackages);
+          }
         }
       }
 
-      scenarios.push(scenario);
+      if (
+        !checkScenarioExists(scenario) &&
+        scenario.packages.length > 0 &&
+        scenario.totalWeight <= vehicle.maxWeight
+      ) {
+        scenarios.push(scenario);
+      }
 
       const nextPackage = sortedPackages.shift();
 
       if (nextPackage) {
-        simulate(vehicle, sortedPackages);
+        simulate(sortedPackages);
       }
     };
 
-    simulate(vehicle, packages);
+    simulate(packages);
 
     return scenarios;
   }
@@ -99,7 +125,8 @@ export class Shipment {
   }
 
   private static findBestScenario(scenarios: ShipmentScenarios) {
-    return Shipment.sortScenarios(scenarios)[0];
+    const sortedScenarios = Shipment.sortScenarios(scenarios);
+    return sortedScenarios[0];
   }
 
   static plan(packages: Package[], vehicle: Vehicle): ShipmentPlan {
