@@ -6,6 +6,7 @@ import {
   buildOrderPackagesTable,
   buildShipmentTable,
   buildShipmentPackagesTable,
+  buildOrderPackagesCostsTable,
 } from './tables';
 import { ZodError } from 'zod';
 import { formatZodError } from '../utils';
@@ -19,6 +20,17 @@ export const printOrder = (order: Order) => {
   console.log(orderTable.toString());
 
   console.log('\n📦 Packages List');
+  console.log(orderPackagesTable.toString());
+};
+
+export const printOrderCosts = (order: Order) => {
+  const orderTable = buildOrderTable(order);
+  const orderPackagesTable = buildOrderPackagesCostsTable(order);
+
+  console.log('\n🧾 Order Details');
+  console.log(orderTable.toString());
+
+  console.log('\n📦 Packages Costs List');
   console.log(orderPackagesTable.toString());
 };
 

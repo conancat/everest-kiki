@@ -42,7 +42,7 @@ export type Options = {
     packagesCount: number;
   };
   packages: PackageProps[];
-  vehicles: {
+  vehicles?: {
     vehiclesCount: number;
     vehiclesMaxSpeed: number;
     vehiclesMaxWeight: number;
@@ -79,7 +79,73 @@ const promptPackagesInput = async (count: number) => {
   return packages;
 };
 
-export const prompt = async (
+export const promptCalculate = async (
+  promptOptions: PromptOptions = {}
+): Promise<PromptResult> => {
+  const order = {
+    baseCost:
+      promptOptions.baseCost ||
+      (await askFor({
+        key: 'baseCost',
+        message: '🧾 Enter order base cost [baseCost]: ',
+        validate: validateBaseCostInput,
+        parse: parseBaseCostInput,
+      })),
+    packagesCount:
+      promptOptions.packagesCount ||
+      (await askFor({
+        key: 'packagesCount',
+        message: '🧾 Enter order packages count [packagesCount]: ',
+        validate: validatePackagesCountInput,
+        parse: parsePackagesCountInput,
+      })),
+  };
+
+  const orderOptionsTable = new Table({
+    head: ['Base Cost', 'Packages Count'],
+    style: { head: ['cyan'] },
+  });
+  orderOptionsTable.push([order.baseCost, order.packagesCount]);
+
+  const packagesTable = new Table({
+    head: ['ID', 'Weight', 'Distance', 'Offer Code'],
+    style: { head: ['cyan'] },
+  });
+
+  const packages = await promptPackagesInput(order.packagesCount);
+
+  packages.forEach((pkg) => {
+    packagesTable.push([
+      pkg.id,
+      pkg.weight,
+      pkg.distance,
+      pkg.offerCode || '-',
+    ]);
+  });
+
+  console.log('\n🧾 Order Request');
+  console.log(orderOptionsTable.toString());
+
+  console.log('\n📦 Packages List');
+  console.log(packagesTable.toString());
+
+  const options = {
+    order,
+    packages,
+  };
+
+  const check = await confirm({
+    message: 'Proceed to calculate costs?',
+    default: true,
+  });
+
+  return {
+    confirm: check,
+    options,
+  };
+};
+
+export const promptDeliver = async (
   promptOptions: PromptOptions = {}
 ): Promise<PromptResult> => {
   const order = {

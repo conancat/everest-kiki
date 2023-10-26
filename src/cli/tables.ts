@@ -58,6 +58,32 @@ export const buildOrderPackagesTable = (order: Order) => {
   return orderPackagesTable;
 };
 
+export const buildOrderPackagesCostsTable = (order: Order) => {
+  const orderPackagesCostsTable = new Table({
+    head: [
+      'ID',
+      'Weight',
+      'Distance',
+      'Delivery Cost',
+      'Discount',
+      'Total Cost',
+    ],
+  });
+
+  order.packages.forEach((pkg) => {
+    orderPackagesCostsTable.push([
+      pkg.id,
+      pkg.weight,
+      pkg.distance,
+      pkg.deliveryCost,
+      pkg.discount,
+      pkg.totalCost,
+    ]);
+  });
+
+  return orderPackagesCostsTable;
+};
+
 export const buildShipmentTable = (shipment: Shipment) => {
   const shipmentTable = new Table({
     head: [
