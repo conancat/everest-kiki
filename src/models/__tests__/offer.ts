@@ -26,131 +26,43 @@ describe('new Offer()', () => {
   });
 });
 
-describe('offer.test(pkg)', () => {
-  it('should return true if an Offer can be applied to a Package', () => {
-    const offer = new Offer({
-      id: 'OFR001',
-      percent: 10,
-      distance: {
-        min: 0,
-        max: 200,
-      },
-      weight: {
-        min: 70,
-        max: 200,
-      },
-    });
+describe('Offer.prototype.test(pkg)', () => {
+  type TestCase = [boolean, number, number];
+  const testCases: TestCase[] = [
+    [true, 100, 150],
+    [false, 100, 50],
+    [false, 100, 300],
+    [false, 50, 200],
+    [false, 250, 100],
+  ];
 
-    const pkg = new Package({
-      id: 'PKG001',
-      weight: 100,
-      distance: 150,
-    });
+  it.each(testCases)(
+    'should return %s if a Package has weight %s and distance %s',
+    (expected: boolean, weight: number, distance: number) => {
+      const offer = new Offer({
+        id: 'OFR001',
+        percent: 10,
+        distance: {
+          min: 100,
+          max: 200,
+        },
+        weight: {
+          min: 70,
+          max: 200,
+        },
+      });
 
-    const test: boolean = offer.test(pkg);
+      const pkg = new Package({
+        id: 'PKG001',
+        weight,
+        distance,
+      });
 
-    expect(test).toBe(true);
-  });
+      const test: boolean = offer.test(pkg);
 
-  it("should return false if a Package's distance is below Offer's allowed range", () => {
-    const offer = new Offer({
-      id: 'OFR001',
-      percent: 10,
-      distance: {
-        min: 100,
-        max: 200,
-      },
-      weight: {
-        min: 70,
-        max: 200,
-      },
-    });
-
-    const pkg = new Package({
-      id: 'PKG001',
-      weight: 100,
-      distance: 50,
-    });
-
-    const test: boolean = offer.test(pkg);
-
-    expect(test).toBe(false);
-  });
-
-  it("should return false if a Package's distance is above Offer's allowed range", () => {
-    const offer = new Offer({
-      id: 'OFR001',
-      percent: 10,
-      distance: {
-        min: 0,
-        max: 200,
-      },
-      weight: {
-        min: 70,
-        max: 200,
-      },
-    });
-
-    const pkg = new Package({
-      id: 'PKG001',
-      weight: 100,
-      distance: 300,
-    });
-
-    const test: boolean = offer.test(pkg);
-
-    expect(test).toBe(false);
-  });
-
-  it("should return false if a Package's weight is below Offer's allowed range", () => {
-    const offer = new Offer({
-      id: 'OFR001',
-      percent: 10,
-      distance: {
-        min: 0,
-        max: 200,
-      },
-      weight: {
-        min: 70,
-        max: 200,
-      },
-    });
-
-    const pkg = new Package({
-      id: 'PKG001',
-      weight: 30,
-      distance: 100,
-    });
-
-    const test: boolean = offer.test(pkg);
-
-    expect(test).toBe(false);
-  });
-
-  it("should return false if a Package's weight is above Offer's allowed range", () => {
-    const offer = new Offer({
-      id: 'OFR001',
-      percent: 10,
-      distance: {
-        min: 0,
-        max: 200,
-      },
-      weight: {
-        min: 70,
-        max: 200,
-      },
-    });
-
-    const pkg = new Package({
-      id: 'PKG001',
-      weight: 250,
-      distance: 100,
-    });
-
-    const test: boolean = offer.test(pkg);
-
-    expect(test).toBe(false);
-  });
+      expect(test).toBe(expected);
+    }
+  );
 });
 
 describe('Offer.prototype.calculate(pkg)', () => {
