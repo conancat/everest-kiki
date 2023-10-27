@@ -24,11 +24,18 @@ npm start
 > everest-kiki@1.0.0 start
 > ts-node src/cli/kiki.ts
 
-🧹 Welcome to Kiki Delivery Service! 🧹
+Usage: kiki [options] [command]
 
-🧹 Please tell us more about your order
+Everest Engineering - Kiki's Delivery Service
 
-? 🧾 Enter order base cost [baseCost]:
+Options:
+  -V, --version        output the version number
+  -h, --help           display help for command
+
+Commands:
+  calculate [options]  Calculate costs for delivery of packages.
+  deliver [options]    Create an order and retrieve a delivery plan.
+  help [command]       display help for command
 ```
 
 ### Running using Bun
@@ -40,15 +47,18 @@ bun start
 
 ## Using the CLI
 
-This project is a CLI application. After you start the application, you will be prompted to enter the order details.  
+This project is a CLI application. There are 2 commands that you can use to interact with the application:
+
+* `kiki calculate`: Calculate costs for delivery of packages. 
+* `kiki deliver`: Create an order and retrieve a delivery plan.
+
+After you run either of the commands, you will be prompted to enter the order details. You can also run the command with the order details as command line arguments. See [Installing as a global CLI tool](#installing-as-a-global-cli-tool) for more details.
 
 The `id`, `weight` and `distance` arguments are required for each Package. The `offerCode` argument is optional.
 
-Note that you can also run the application with the order details as command line arguments. See [Installing as a global CLI tool](#installing-as-a-global-cli-tool) for more details.
-
 
 ```
-➜ kiki
+➜ kiki deliver
 
 🧹 Welcome to Kiki's Delivery Service! 🧹
 
@@ -73,21 +83,18 @@ After this, you will be shown a report of your order. This includes the total co
 
 ## Screenshots
 
-### Taking an order
-![Screenshot 1 - Taking an order](./docs/kiki-screenshot-1.png)
+### `kiki calculate`
 
+![kiki calculate 1](./docs/kiki-calculate-1.png)
+![kiki calculate 2](./docs/kiki-calculate-2.png)
 
-### Order confirmation
-![Screenshot 2 - Order confirmation](./docs/kiki-screenshot-2.png)
+### `kiki deliver`
 
-### Order summary
-![Screenshot 3 - Order summary](./docs/kiki-screenshot-3.png)
-
-### Shipment plan
-![Screenshot 4 - Shipment plan 1](./docs/kiki-screenshot-4.png)
-![Screenshot 5 - Shipment plan 2](./docs/kiki-screenshot-5.png)
-
-
+![kiki deliver 1](./docs/kiki-deliver-1.png)
+![kiki deliver 2](./docs/kiki-deliver-2.png)
+![kiki deliver 3](./docs/kiki-deliver-3.png)
+![kiki deliver 4](./docs/kiki-deliver-4.png)
+![kiki deliver 5](./docs/kiki-deliver-5.png)
 
 ## Build
 
@@ -117,34 +124,33 @@ node kiki.js
 You can also install this project as a global CLI tool using the following command. This will add `kiki` as a command in your terminal. You can then run the command anywhere in your terminal.
 
 
-```bash
+```
 npm link
 
-kiki -h
+Usage: kiki [options] [command]
 
-Usage: kiki [options]
-
-Everest Engineering - Kiki Delivery Service. Create an order and retrieve a delivery plan.
+Everest Engineering - Kiki's Delivery Service
 
 Options:
-  -b, --base-cost <number>            Base cost
-  -p, --packages-count <number>       Packages count
-  -c, --vehicles-count <number>       Vehicles count
-  -s, --vehicles-max-speed <number>   Vehicles max speed
-  -w, --vehicles-max-weight <number>  Vehicles max weight
-  -h, --help                          display help for command
+  -V, --version        output the version number
+  -h, --help           display help for command
+
+Commands:
+  calculate [options]  Calculate costs for delivery of packages.
+  deliver [options]    Create an order and retrieve a delivery plan.
+  help [command]       display help for command
 ```
 
-You can run the command with the supported options to save time when creating an order. If you supply all options via the CLI, you will not be prompted to enter the order details, and instead you proceed to enter details for each package directly.
+You can run `kiki calculate` or `kiki deliver` commands with the supported options to save . If you supply all options via the CLI, you will not be prompted to enter the order details, and instead you proceed to enter details for each package directly.
 
 For example, you can run: 
 
 ```bash
 # Specify which option you want as part of the command. All options are optional.
-kiki --base-cost 100 --packages-count 5 --vehicles-count 2 --vehicles-max-speed 70 --vehicles-max-weight 200
+kiki deliver --base-cost 100 --packages-count 5 --vehicles-count 2 --vehicles-max-speed 70 --vehicles-max-weight 200
 
 # Or you can use the short version instead
-kiki -b 100 -p 5 -c 2 -s 70 -w 200
+kiki deliver -b 100 -p 5 -c 2 -s 70 -w 200
 
 # You should see the following output:
 
