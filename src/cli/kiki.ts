@@ -73,10 +73,9 @@ async function calculate(opts: ProgramOptions = {}) {
 
   order.calculate();
 
-  console.log("\n\n\nOkay! Here's the delivery plan for your order 📦\n");
+  console.log('\n\n\nOkay! Here are the costs for your order 📦\n');
 
   printOrderCosts(order);
-  printShipments(order);
 
   console.log("\n\n🧹Thank you for using Kiki's Delivery Service!🧹");
 }
