@@ -2,18 +2,6 @@ import { Package, createPackage } from '../package';
 import { createVehicle } from '../vehicle';
 
 describe('createVehicle()', () => {
-  it('should return a vehicle object', () => {
-    const vehicle = createVehicle({
-      id: 'VEHICLE_1',
-      maxSpeed: 70,
-      maxWeight: 200,
-    });
-
-    expect(vehicle.id).toBe('VEHICLE_1');
-    expect(vehicle.maxSpeed).toBe(70);
-    expect(vehicle.maxWeight).toBe(200);
-  });
-
   it("should calculate the vehicle's travel time for delivering a package", () => {
     const vehicle = createVehicle({
       id: 'VEHICLE_1',

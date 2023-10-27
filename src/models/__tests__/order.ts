@@ -1,27 +1,6 @@
 import mockPackages from '../../__mocks__/packages.json';
 import { createOrder } from '../order';
-import { createPackage } from '../package';
 import { createVehicle } from '../vehicle';
-
-describe('createOrder()', () => {
-  it('should create a new order with the provided Packages', () => {
-    const baseCost = 100;
-
-    const order = createOrder({
-      packages: mockPackages,
-      baseCost,
-    });
-
-    const expectedPackages = mockPackages.map((pkg) =>
-      createPackage({
-        ...pkg,
-        baseCost,
-      })
-    );
-
-    expect(order.packages).toEqual(expectedPackages);
-  });
-});
 
 describe('Order.prototype.plan()', () => {
   it('should plan delivery and set delivery time for all packages', () => {

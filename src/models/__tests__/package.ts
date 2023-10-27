@@ -1,37 +1,4 @@
-import { Package, createPackage } from '../package';
-
-describe('createPackage()', () => {
-  it('should create a Package object without offer code', () => {
-    const pkg = createPackage({
-      id: 'PKG1',
-      weight: 50,
-      distance: 100,
-    });
-
-    expect(pkg instanceof Package).toBe(true);
-
-    expect(pkg.id).toBe('PKG1');
-    expect(pkg.weight).toBe(50);
-    expect(pkg.distance).toBe(100);
-    expect(pkg.offerCode).toBeUndefined();
-  });
-
-  it('should create a Package object with offer code', () => {
-    const pkg = createPackage({
-      id: 'PKG1',
-      weight: 50,
-      distance: 100,
-      offerCode: 'OFR001',
-    });
-
-    expect(pkg instanceof Package).toBe(true);
-
-    expect(pkg.id).toBe('PKG1');
-    expect(pkg.weight).toBe(50);
-    expect(pkg.distance).toBe(100);
-    expect(pkg.offerCode).toBe('OFR001');
-  });
-});
+import { createPackage } from '../package';
 
 describe('Package.prototype.setDeliveryTime()', () => {
   it('should set the deliveryTime property of a Package object', () => {

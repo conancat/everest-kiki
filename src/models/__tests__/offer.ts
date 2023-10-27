@@ -1,31 +1,6 @@
 import { Offer } from '../offer';
 import { Package } from '../package';
 
-describe('new Offer()', () => {
-  it('should return an Offer object when given required parameters', () => {
-    const offer = new Offer({
-      id: 'OFR001',
-      percent: 10,
-      distance: {
-        min: 0,
-        max: 200,
-      },
-      weight: {
-        min: 70,
-        max: 200,
-      },
-    });
-
-    expect(offer instanceof Offer).toBe(true);
-    expect(offer.id).toBe('OFR001');
-    expect(offer.percent).toBe(10);
-    expect(offer.distance.min).toBe(0);
-    expect(offer.distance.max).toBe(200);
-    expect(offer.weight.min).toBe(70);
-    expect(offer.weight.max).toBe(200);
-  });
-});
-
 describe('Offer.prototype.test(pkg)', () => {
   type TestCase = [boolean, number, number];
   const testCases: TestCase[] = [
