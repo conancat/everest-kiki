@@ -59,7 +59,7 @@ export class Package {
       return this.discount;
     }
 
-    if (offer.test(this)) {
+    if (offer.canApplyToPackage(this)) {
       this.offer = offer;
       this.discount = offer.calculate(this);
     }

@@ -24,7 +24,7 @@ export class Offer {
     this.distance = props.distance;
     this.weight = props.weight;
   }
-  test(pkg: Package): boolean {
+  canApplyToPackage(pkg: Package): boolean {
     return (
       pkg.distance >= this.distance.min &&
       pkg.distance <= this.distance.max &&

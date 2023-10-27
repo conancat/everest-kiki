@@ -1,7 +1,7 @@
 import { Offer } from '../offer';
 import { Package } from '../package';
 
-describe('Offer.prototype.test(pkg)', () => {
+describe('Offer.prototype.canApplyToPackage(pkg)', () => {
   type TestCase = [boolean, number, number];
   const testCases: TestCase[] = [
     [true, 100, 150],
@@ -33,7 +33,7 @@ describe('Offer.prototype.test(pkg)', () => {
         distance,
       });
 
-      const test: boolean = offer.test(pkg);
+      const test: boolean = offer.canApplyToPackage(pkg);
 
       expect(test).toBe(expected);
     }
